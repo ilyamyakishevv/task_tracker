@@ -1,1 +1,1 @@
-export FLASK_APP=webapp && export FLASK_ENV=development && flask run
+export FLASK_APP=tasktrackerapp && export FLASK_ENV=development && flask run
