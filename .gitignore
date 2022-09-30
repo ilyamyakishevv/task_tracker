@@ -132,4 +132,4 @@ __pycache__/
 .vscode/
 env/
 *.db
-.D_Store
+.DS_Store
