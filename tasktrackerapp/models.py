@@ -8,7 +8,7 @@ class Tasks(db.Model):
     name = db.Column(db.String, nullable=False)
     desription = db.Column(db.String, nullable=False)
     status = db.Column(db.String, nullable=False)
-    deadline = db.Column(db.Datetime, nullable=True)
+    deadline = db.Column(db.DateTime, nullable=True)
 
     def __repr__(self):
         return f"Task {self.id} {self.name} in status {self.status}"

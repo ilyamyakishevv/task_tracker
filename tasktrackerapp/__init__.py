@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from tasktrackerapp.models import db
 
 
 def create_app():
@@ -6,7 +7,6 @@ def create_app():
     app.config.from_pyfile('config.py')
     app_title = "Task tracker LP26 project"
     message = "Project is still in progress"
-    app.config.from_pyfile('config.py')
 
     @app.route('/')
     def index():
