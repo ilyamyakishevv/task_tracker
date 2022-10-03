@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from tasktrackerapp.models import db
+from tasktrackerapp.task_add_form import TaskAdd
 
 
 def create_app():
@@ -11,4 +12,10 @@ def create_app():
     @app.route('/')
     def index():
         return render_template('index.html', title=app_title, message=message)
-    return app
+       
+    @app.route('/add_task')
+    def add_task():
+        title = "Добавить задачу"
+        add_task_form = TaskAdd()
+        return render_template('add_task.html', title=title, form=add_task_form)
+    return app 
