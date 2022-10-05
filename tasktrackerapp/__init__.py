@@ -8,6 +8,7 @@ def create_app():
     app.config.from_pyfile('config.py')
     app_title = "Task tracker LP26 project"
     message = "Project is still in progress"
+    db.init_app(app)
 
     @app.route('/')
     def index():
