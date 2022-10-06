@@ -1,5 +1,7 @@
-from flask import Flask, render_template
-from tasktrackerapp.models import db
+from crypt import methods
+from xxlimited import new
+from flask import Flask, render_template, flash, redirect, url_for
+from tasktrackerapp.models import Tasks, db
 from tasktrackerapp.task_add_form import TaskAdd
 
 
@@ -19,4 +21,22 @@ def create_app():
         title = "Добавить задачу"
         add_task_form = TaskAdd()
         return render_template('add_task.html', title=title, form=add_task_form)
+
+    @app.route('/adding_task', methods=['POST'])
+    def adding_task():
+        adding_form = TaskAdd() 
+        if adding_form.validate_on_submit(): 
+            task_name = adding_form.name.data
+            task_description = adding_form.description.data
+            task_deadline = adding_form.deadline.data
+            new_task = Tasks(name=task_name, desription = task_description, status='OPEN', deadline = task_deadline)
+            db.session.add(new_task)
+            db.session.commit()
+            flash ("Задание успешно добавлено")
+            return redirect(url_for('add_task'))
+        flash ("Заполните все поля!")
+        return redirect(url_for('add_task'))
+
+
+           
     return app 
