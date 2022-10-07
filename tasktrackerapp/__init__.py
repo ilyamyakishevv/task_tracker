@@ -1,4 +1,5 @@
 from crypt import methods
+from typing import DefaultDict
 from xxlimited import new
 from flask import Flask, render_template, flash, redirect, url_for
 from tasktrackerapp.models import Tasks, db
@@ -29,7 +30,7 @@ def create_app():
             task_name = adding_form.name.data
             task_description = adding_form.description.data
             task_deadline = adding_form.deadline.data
-            new_task = Tasks(name=task_name, desription = task_description, status='OPEN', deadline = task_deadline)
+            new_task = Tasks(name=task_name, description = task_description, status='OPEN', deadline = task_deadline)
             db.session.add(new_task)
             db.session.commit()
             flash ("Задание успешно добавлено")
