@@ -1,9 +1,7 @@
-from crypt import methods
-from typing import DefaultDict
-from xxlimited import new
 from flask import Flask, render_template, flash, redirect, url_for
 from tasktrackerapp.models import Tasks, db
 from tasktrackerapp.task_add_form import TaskAdd
+from datetime import date
 
 
 def create_app():
@@ -30,12 +28,15 @@ def create_app():
             task_name = adding_form.name.data
             task_description = adding_form.description.data
             task_deadline = adding_form.deadline.data
+            if task_deadline < date.today():
+                flash("Ввелите коррекнтную дату!")
+                return redirect(url_for('add_task'))
             new_task = Tasks(name=task_name, description = task_description, status='OPEN', deadline = task_deadline)
             db.session.add(new_task)
             db.session.commit()
-            flash ("Задание успешно добавлено")
+            flash("Задание успешно добавлено")
             return redirect(url_for('add_task'))
-        flash ("Заполните все поля!")
+        flash("Заполните все поля!")
         return redirect(url_for('add_task'))
 
 
