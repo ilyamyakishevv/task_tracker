@@ -6,7 +6,7 @@ from datetime import date
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from tasktrackerapp.database import db_session
 from werkzeug.security import generate_password_hash, check_password_hash
-from tasktrackerapp.models import db, Users
+
 
 
 def create_app():

@@ -22,7 +22,7 @@ class Users(db.Model, UserMixin):
     login = db.Column(db.String(), index=True, unique = True)
     password = db.Column(db.String(128))
     firname_lasname = db.Column(db.String(), index=True)
-    email = db.Column(db.String, unique = True)
+    email = db.Column(db.String)
     role = db.Column(db.Text, nullable=True)
 
     def set_password(self, password):
