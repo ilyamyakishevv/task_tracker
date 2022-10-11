@@ -4,7 +4,6 @@ from tasktrackerapp.task_add_form import TaskAdd
 from tasktrackerapp.forms import LoginForm, AddForm, DeleteForm
 from datetime import date
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
-from tasktrackerapp.database import db_session
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -117,8 +116,8 @@ def create_app():
             role = form.role.data
             user_info = Users(login=login, firname_lasname=firname_lasname, email=email, role=role)     
             user_info.set_password(password1)
-            db_session.add(user_info)  
-            db_session.commit()         
+            db.session.add(user_info)  
+            db.session.commit()         
             
         flash('Пользователь добавлен')
         return redirect(url_for('admin'))
@@ -130,9 +129,9 @@ def create_app():
         form = DeleteForm()
         if form.validate_on_submit():
             inp_login = form.del_login.data
-            search = db_session.query(Users).filter(Users.login == inp_login).one()
-            db_session.delete(search)
-            db_session.commit()
+            search = db.session.query(Users).filter(Users.login == inp_login).one()
+            db.session.delete(search)
+            db.session.commit()
         flash('Пользователь удален')
         return redirect(url_for('admin'))
         
