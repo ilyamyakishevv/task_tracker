@@ -24,6 +24,7 @@ class Users(db.Model, UserMixin):
     firname_lasname = db.Column(db.String(), index=True)
     email = db.Column(db.String)
     role = db.Column(db.Text, nullable=True)
+    phone = db.Column(db.Integer)
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
