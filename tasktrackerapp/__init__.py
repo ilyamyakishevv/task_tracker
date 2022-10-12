@@ -8,6 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_migrate import Migrate 
 
 
+
 def create_app():
     app = Flask(__name__)
     app.config.from_pyfile('config.py')
@@ -15,6 +16,7 @@ def create_app():
     message = "Project is still in progress"
     db.init_app(app)
     migrate = Migrate(app, db)
+
    
     login_manager = LoginManager()
     login_manager.init_app(app)

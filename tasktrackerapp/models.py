@@ -26,6 +26,7 @@ class Users(db.Model, UserMixin):
     role = db.Column(db.Text, nullable=True)
     phone = db.Column(db.Integer)
 
+
     def set_password(self, password):
         self.password = generate_password_hash(password)
 
