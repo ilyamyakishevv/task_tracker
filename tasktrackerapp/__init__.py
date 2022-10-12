@@ -5,6 +5,7 @@ from tasktrackerapp.forms import LoginForm, AddForm, DeleteForm
 from datetime import date
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_migrate import Migrate 
 
 
 
@@ -14,6 +15,8 @@ def create_app():
     app_title = "Task tracker LP26 project"
     message = "Project is still in progress"
     db.init_app(app)
+    migrate = Migrate(app, db)
+
    
     login_manager = LoginManager()
     login_manager.init_app(app)
