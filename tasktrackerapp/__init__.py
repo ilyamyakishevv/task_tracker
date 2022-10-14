@@ -50,11 +50,15 @@ def create_app():
             if task_deadline < date.today():
                 flash("Ввелите корректную дату!")
                 return redirect(url_for('add_task'))
+            task_creator = current_user.firname_lasname
+            task_responsible = current_user.firname_lasname
             new_task = Tasks(
                 name=task_name,
                 description=task_description,
                 status='OPEN',
-                deadline=task_deadline
+                deadline=task_deadline,
+                creator=task_creator,
+                responsible=task_responsible
                 )
             db.session.add(new_task)
             db.session.commit()
@@ -63,7 +67,16 @@ def create_app():
         flash("Заполните все поля!")
         return redirect(url_for('add_task'))
 
+    @app.route('/view_tasks')
+    def view_tasks():
+        title = "Все задачи"
+        tasks = Tasks.query.order_by(Tasks.id).all()
+        return render_template('view_tasks.html', title=title, tasks=tasks) 
 
+    @app.route('/task/<int:id>')
+    def task(id):
+        task = Tasks.query.get(id)
+        return render_template('task.html', task=task) 
 
     @app.route('/login')
     def login():
