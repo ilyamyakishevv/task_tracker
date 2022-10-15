@@ -134,4 +134,4 @@ env/
 *.db
 .DS_Store
 database.py
-*.old
+tasktracker_tasks.db.old
