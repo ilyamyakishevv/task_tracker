@@ -21,10 +21,10 @@
         </a>
   
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="/" class="nav-link px-2 link-secondary">Home</a></li>
-          <li><a href="add_task" class="nav-link px-2 link-dark">Add Task</a></li>
-          <li><a href="view_tasks" class="nav-link px-2 link-dark">View Tasks</a></li>
-          <li><a href="#" class="nav-link px-2 link-dark">Manage Users</a></li>
+            <li><a href="/" class="nav-link px-2 link-secondary">Home</a></li>
+            <li><a href="/add_task" class="nav-link px-2 link-dark">Add Task</a></li>
+            <li><a href="/view_tasks" class="nav-link px-2 link-dark">View Tasks</a></li>
+            <li><a href="#" class="nav-link px-2 link-dark">Manage Users</a></li>
         </ul>
   
         <div class="col-md-3 text-end">
@@ -42,17 +42,15 @@
             <p><b>Создатель {{ task.creator }}</b></p>
             <p><b>Испольнитель {{ task.responsible }}</b></p>
             <p><b>Срок исполнения до {{ task.deadline.date() }}</b></p>
-            <a href="task/{{ task.id }}" class="btn btn-warning">Детали задачи</a>
+            <a href="task/{{ task.id }}" class="btn btn-primary">Детали задачи</a>
         </div>
-
-
         {% endfor %}
     </div>
       </div>
       </div>
     </div>
 
-    </form>
+
     
 
     <!-- Optional JavaScript; choose one of the two! -->

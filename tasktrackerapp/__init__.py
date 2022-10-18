@@ -74,9 +74,20 @@ def create_app():
         return render_template('view_tasks.html', title=title, tasks=tasks) 
 
     @app.route('/task/<int:id>')
-    def task(id):
+    def get_task(id):
         task = Tasks.query.get(id)
         return render_template('task.html', task=task) 
+      
+    @app.route('/task/<int:id>/delete')
+    def delete_task(id):
+        task = Tasks.query.get_or_404(id)
+        try: 
+            db.session.delete(task)
+            db.session.commit()
+            flash("Задание успешно удалено")
+            return redirect(url_for('view_tasks'))
+        except: 
+            return flash("При удалении задания произошла ошибка")
 
     @app.route('/login')
     def login():
