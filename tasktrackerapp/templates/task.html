@@ -32,11 +32,12 @@
             </div>
           </header>
     </div>
- 
+
     <div class="container @t-5">
         <h1>{{ task.name}}</h1>
         <div class="alert alert-secondary">
             <p> {{ task.description }}</p>
+            <p> <b>Статус задачи {{ task.status }}</b></p>
             <p><b>Создатель {{ task.creator }}</b></p>
             <p><b>Испольнитель {{ task.responsible }}</b></p>
             <p><b>Срок исполнения до {{ task.deadline.date() }}</b></p>

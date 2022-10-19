@@ -27,3 +27,7 @@ class TaskAdd(FlaskForm):
         "Создать задачу",
         render_kw={'class': 'btn btn-primary'}
         )
+    edit = SubmitField(
+        "Изменить задачу",
+        render_kw={'class': 'btn btn-primary'}
+        )
