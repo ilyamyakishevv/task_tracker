@@ -21,3 +21,10 @@ class AddForm(FlaskForm):
 class DeleteForm(FlaskForm):
     del_login = StringField("Логин удаляемого пользователя", validators=[DataRequired()], render_kw={"class": "form-control"})
     submit2 = SubmitField("Ввод", render_kw={"class":"btn btn-primary"})
+
+    """ class EditForm(FlaskForm):
+        edit_login = StringField("Логин изменяемого пользователя", validators=[DataRequired()], render_kw={"class": "form-control"})
+        firname_lasname = StringField("Имя пользователя",  render_kw={"class": "form-control"})
+        email = StringField("E-mail пользователя",  render_kw={"class": "form-control"})
+        role = StringField("Права пользователя",  render_kw={"class": "form-control"})
+        submit = SubmitField("Изменить", render_kw={"class":"btn btn-primary"}) """

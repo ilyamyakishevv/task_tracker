@@ -14,7 +14,11 @@
 
 
 <body>
-
+    <style>
+        body {
+        background-color: Lavender;
+        }
+      </style>
     <div class="container">
         <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
           <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
@@ -26,16 +30,15 @@
             <li><a href="/add_task" class="nav-link px-2 link-dark">Add Task</a></li>
             <li><a href="/view_tasks" class="nav-link px-2 link-dark">View Tasks</a></li>
             <li><a href="#" class="nav-link px-2 link-dark">Manage Users</a></li>
+            <li><a href="all_users" class="nav-link px-2 link-dark">All Users</a></li>
           </ul>
     
           <div class="col-md-3 text-end">
             <button type="button" class="btn btn-outline-primary me-2">Logout</button>
           </div>
         </header>
+
     <div class="container">
-        <h1>Project</h1>
-        <hr align= "left" size="1px" width="600px" color="violet">
-    
         <div class="row">
 
             <div class="col-4">
@@ -48,7 +51,7 @@
                     </div>
                     {% endif %}
                 {% endwith %}
-            <form action="{{ url_for('add_user') }}" method="POST">
+                <form action="{{ url_for('add_user') }}" method="POST">
                 <legend>Добавление пользователя</legend>
                 {{ form.hidden_tag() }}
                 <div class="form-group">
@@ -76,7 +79,7 @@
                 </div>
 
                      {{ form.submit }}
-            </form>     
+                </form>     
             </div>
 
 
@@ -95,12 +98,14 @@
                 <form action = "{{ url_for('del_user') }}" method="POST">
                 <legend>Удаление пользователя</legend>
                 {{ form2.hidden_tag() }}
-                <div class="form-group" >
+                <div class="form-group" >   
                     {{ form2.del_login.label }}
                     {{ form2.del_login() }}
                 </div>
                     {{ form2.submit2 }}
                 </form>
+            </div>
+
             </div>
 
 </div>

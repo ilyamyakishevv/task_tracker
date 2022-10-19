@@ -26,6 +26,7 @@ def create_app():
     def load_user(user_id):
         return Users.query.get(user_id)
 
+
     @app.route('/')
     def index():
         return render_template('index.html', title=app_title, message=message)
@@ -66,6 +67,18 @@ def create_app():
             return redirect(url_for('add_task'))
         flash("Заполните все поля!")
         return redirect(url_for('add_task'))
+
+    @app.route('/all_users')
+    def all_users():
+        title = "Все пользователи"
+        users = Users.query.order_by(Users.id).all()
+        return render_template('all_users.html', title = title, users=users)
+        
+    @app.route('/user/<int:id>')
+    def user(id):
+        sel_user = Users.query.get(id)
+        return render_template('user.html', user = sel_user)
+
 
     @app.route('/view_tasks')
     def view_tasks():
@@ -108,8 +121,8 @@ def create_app():
 
     @app.route('/login')
     def login():
-        """ if current_user.is_authenticated: """
-        """     return redirect(url_for('index')) """
+        if current_user.is_authenticated:
+             return redirect(url_for('index'))
         title = "Авторизация"
         login_form = LoginForm()
         return render_template('login.html', page_title=title, form=login_form) 
@@ -165,7 +178,6 @@ def create_app():
             
         flash('Пользователь добавлен')
         return redirect(url_for('admin'))
-
 
 
     @app.route('/del_user', methods = ['POST', 'GET'])
