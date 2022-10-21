@@ -62,9 +62,9 @@
             </div>
             <div class="col-3">
                 <h2 style="border-bottom:5px solid Gray">Сотрудники</h2>
-                <hr>Артемов Андрей</hr>
-                <hr>Илья Мякишев</hr>
-                <hr>Иван Михайлов</hr>
+                {% for user in users %}
+                <p><a href="/user/{{ user.id }}"> {{ user.firname_lasname }}</a></p>
+                {% endfor %}
 
 </div>
 </div>

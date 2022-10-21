@@ -30,7 +30,7 @@ def create_app():
     @app.route('/')
     def index():
         main_page_users = Users.query.all()
-        return render_template('index.html', title=app_title, message=message)
+        return render_template('index.html', title=app_title, message=message, users=main_page_users)
 
     @app.route('/add_task')
     def add_task():
