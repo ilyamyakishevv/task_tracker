@@ -60,3 +60,14 @@
             </tr>
         </table>
         <h2 align="center">Список задач</h2>
+        {% for task in user_tasks %}
+        <div class="alert alert-info">
+            <h2>{{ task.name }}</h2>
+            <p> {{ task.description }}</p>
+            <p> <b>Статус задачи {{ task.status }}</b></p>
+            <p><b>Создатель {{ task.creator }}</b></p>
+            <p><b>Срок исполнения до {{ task.deadline.date() }}</b></p>
+            <a href="/task/{{ task.id }}" class="btn btn-primary">Детали задачи</a>
+        </div>
+        {% endfor %}
+  </body>

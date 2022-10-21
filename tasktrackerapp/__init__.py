@@ -77,7 +77,8 @@ def create_app():
     @app.route('/user/<int:id>')
     def user(id):
         sel_user = Users.query.get(id)
-        return render_template('user.html', user = sel_user)
+        user_tasks = Tasks.query.filter(Tasks.responsible == sel_user.firname_lasname)
+        return render_template('user.html', user=sel_user, user_tasks=user_tasks)
 
 
     @app.route('/view_tasks')
@@ -99,6 +100,7 @@ def create_app():
             db.session.commit()
             return redirect(url_for('view_tasks'))
         except:
+            db.session.rollback()
             return flash("При удалении задания произошла ошибка")
 
     @app.route('/task/<int:id>/edit', methods=['POST', 'GET'])
@@ -115,8 +117,7 @@ def create_app():
             db.session.commit()
             flash("Задание успешно измненено")
             return redirect(url_for('view_tasks'))
-        else: 
-            return render_template('edit_task.html', form=edit_form)
+        return render_template('edit_task.html', form=edit_form)
 
 
     @app.route('/login')
