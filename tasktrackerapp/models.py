@@ -10,6 +10,8 @@ class Tasks(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True)
     name = db.Column(db.String, index=True, nullable=False)
     description = db.Column(db.String, nullable=False)
+    creator = db.Column(db.String, nullable=False)
+    responsible = db.Column(db.String, nullable=False)
     status = db.Column(db.String, nullable=False, default="OPEN")
     deadline = db.Column(db.DateTime, nullable=True)
 
@@ -38,4 +40,9 @@ class Users(db.Model, UserMixin):
         return self.role == 'admin' 
 
     def __repr__(self):
-        return 'Сотрудник - '.format(self.name)
+        return 'Сотрудник - {}'.format(self.firname_lasname)
+    
+    # class Statuses(db.Model):
+    #     id = db.Column(db.Integer, primary_key=True, unique=True)
+    #     name = db.Column(db.String, index=True, nullable=False)
+    #     description = db.Column(db.String, index=True, nullable=True)

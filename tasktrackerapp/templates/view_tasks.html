@@ -33,43 +33,26 @@
         </div>
       </header>
     </div>
-    <div  class="container">
-      <h1>Добавьте задачу</h1>
-      
-    <div class="col-8">
-    <div class="row">
-      <div class="col-5">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <div class="alert alert-warning" role="alert">
-            {% for message in messages %}
-                {{ message }}<br>
-            {% endfor %}
+ 
+    <div class="container @t-5">
+        <h1>{{ title }}</h1>
+        {% for task in tasks%}
+        <div class="alert alert-info">
+            <h2>{{ task.name }}</h2>
+            <p> {{ task.description }}</p>
+            <p> <b>Статус задачи {{ task.status }}</b></p>
+            <p><b>Создатель {{ task.creator }}</b></p>
+            <p><b>Испольнитель {{ task.responsible }}</b></p>
+            <p><b>Срок исполнения до {{ task.deadline.date() }}</b></p>
+            <a href="task/{{ task.id }}" class="btn btn-primary">Детали задачи</a>
         </div>
-        {% endif %}
-        {% endwith %}
-    <form action="{{ url_for('adding_task') }}" method="post"> 
-        {{ form.hidden_tag() }} 
-        <div class="form-group" style="height: 100px">
-            {{ form.name.label}}
-            {{ form.name()}}
-        </div>
-        <div class="form-group" style="height: 100px">
-            {{ form.description.label}}              
-            {{ form.description()}}
-      
-        <div class="form-group" style="height: 100px">
-           {{ form.deadline.label}}
-           {{ form.deadline()}}
-        </div>
-        <p>
-            {{ form.submit()}}
-        </p>
+        {% endfor %}
+    </div>
       </div>
       </div>
     </div>
 
-    </form>
+
     
 
     <!-- Optional JavaScript; choose one of the two! -->

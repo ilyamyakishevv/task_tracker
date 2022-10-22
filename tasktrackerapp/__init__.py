@@ -5,7 +5,7 @@ from tasktrackerapp.forms import LoginForm, AddForm, DeleteForm
 from datetime import date
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_migrate import Migrate 
+from flask_migrate import Migrate
 
 
 
@@ -25,6 +25,7 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
         return Users.query.get(user_id)
+
 
     @app.route('/')
     def index():
@@ -50,11 +51,15 @@ def create_app():
             if task_deadline < date.today():
                 flash("Ввелите корректную дату!")
                 return redirect(url_for('add_task'))
+            task_creator = current_user.firname_lasname
+            task_responsible = current_user.firname_lasname
             new_task = Tasks(
                 name=task_name,
                 description=task_description,
                 status='OPEN',
-                deadline=task_deadline
+                deadline=task_deadline,
+                creator=task_creator,
+                responsible=task_responsible
                 )
             db.session.add(new_task)
             db.session.commit()
@@ -63,12 +68,62 @@ def create_app():
         flash("Заполните все поля!")
         return redirect(url_for('add_task'))
 
+    @app.route('/all_users')
+    def all_users():
+        title = "Все пользователи"
+        users = Users.query.order_by(Users.id).all()
+        return render_template('all_users.html', title = title, users=users)
+        
+    @app.route('/user/<int:id>')
+    def user(id):
+        sel_user = Users.query.get(id)
+        user_tasks = Tasks.query.filter(Tasks.responsible == sel_user.firname_lasname)
+        return render_template('user.html', user=sel_user, user_tasks=user_tasks)
+
+
+    @app.route('/view_tasks')
+    def view_tasks():
+        title = "Все задачи"
+        tasks = Tasks.query.order_by(Tasks.id).all()
+        return render_template('view_tasks.html', title=title, tasks=tasks) 
+
+    @app.route('/task/<int:id>')
+    def get_task(id):
+        task = Tasks.query.get(id)
+        return render_template('task.html', task=task) 
+      
+    @app.route('/task/<int:id>/delete')
+    def delete_task(id):
+        task = Tasks.query.get_or_404(id)
+        try: 
+            db.session.delete(task)
+            db.session.commit()
+            return redirect(url_for('view_tasks'))
+        except:
+            db.session.rollback()
+            return flash("При удалении задания произошла ошибка")
+
+    @app.route('/task/<int:id>/edit', methods=['POST', 'GET'])
+    def edit_task(id):
+        task = Tasks.query.get(id)
+        edit_form = TaskAdd()
+        if edit_form.validate_on_submit():
+            task.name = edit_form.name.data
+            task.description = edit_form.description.data
+            task.deadline = edit_form.deadline.data
+            if task.deadline < date.today():
+                flash("Ввелите корректную дату!")
+                return redirect(url_for('task_edit'))
+            db.session.commit()
+            flash("Задание успешно измненено")
+            return redirect(url_for('view_tasks'))
+        return render_template('edit_task.html', form=edit_form)
 
 
     @app.route('/login')
     def login():
-        """ if current_user.is_authenticated: """
-        """     return redirect(url_for('index')) """
+        if current_user.is_authenticated:
+             return redirect(url_for('index'))
         title = "Авторизация"
         login_form = LoginForm()
         return render_template('login.html', page_title=title, form=login_form) 
@@ -124,7 +179,6 @@ def create_app():
             
         flash('Пользователь добавлен')
         return redirect(url_for('admin'))
-
 
 
     @app.route('/del_user', methods = ['POST', 'GET'])
