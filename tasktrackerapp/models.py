@@ -21,7 +21,7 @@ class Tasks(db.Model):
 
 class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    login = db.Column(db.String(), index=True, unique = True)
+    login = db.Column(db.String(), index=True, unique=True)
     password = db.Column(db.String(128))
     firname_lasname = db.Column(db.String(), index=True)
     email = db.Column(db.String)
@@ -37,12 +37,14 @@ class Users(db.Model, UserMixin):
 
     @property
     def is_admin(self):
-        return self.role == 'admin' 
+        return self.role == 'admin'
 
     def __repr__(self):
         return 'Сотрудник - {}'.format(self.firname_lasname)
+
+
+class Statuses(db.Model):
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    name = db.Column(db.String, index=True, unique=True, nullable=False)
+    description = db.Column(db.String, index=True, nullable=True)
     
-    # class Statuses(db.Model):
-    #     id = db.Column(db.Integer, primary_key=True, unique=True)
-    #     name = db.Column(db.String, index=True, nullable=False)
-    #     description = db.Column(db.String, index=True, nullable=True)

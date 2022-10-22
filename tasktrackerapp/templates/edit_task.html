@@ -11,7 +11,11 @@
     <title>Изменение задачи</title>
   </head>
   <body>
-
+    <style>
+      body {
+      background-color: Lavender;
+      }
+    </style>
     <div class="b-example-divider"></div>
 
     <div class="container">
@@ -60,6 +64,16 @@
         <div class="form-group" style="height: 100px">
            {{ form.deadline.label}}
            {{ form.deadline()}}
+        </div>
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            Statuses
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            {% for status in statuses %}
+            <li><a class="dropdown-item" href="#">{{ status.name }}</a></li>
+            {% endfor %}
+          </ul>
         </div>
         <p>
             {{ form.edit()}}

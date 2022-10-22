@@ -1,5 +1,5 @@
 from flask import Flask, render_template, flash, redirect, url_for
-from tasktrackerapp.models import Tasks, Users, db
+from tasktrackerapp.models import Statuses, Tasks, Users, db
 from tasktrackerapp.task_add_form import TaskAdd
 from tasktrackerapp.forms import LoginForm, AddForm, DeleteForm
 from datetime import date
@@ -29,7 +29,8 @@ def create_app():
 
     @app.route('/')
     def index():
-        return render_template('index.html', title=app_title, message=message)
+        main_page_users = Users.query.all()
+        return render_template('index.html', title=app_title, message=message, users=main_page_users)
 
     @app.route('/add_task')
     def add_task():
@@ -107,6 +108,7 @@ def create_app():
     def edit_task(id):
         task = Tasks.query.get(id)
         edit_form = TaskAdd()
+        statuses = Statuses.query.order_by(Statuses.id).all()
         if edit_form.validate_on_submit():
             task.name = edit_form.name.data
             task.description = edit_form.description.data
@@ -117,7 +119,7 @@ def create_app():
             db.session.commit()
             flash("Задание успешно измненено")
             return redirect(url_for('view_tasks'))
-        return render_template('edit_task.html', form=edit_form)
+        return render_template('edit_task.html', form=edit_form, statuses=statuses)
 
 
     @app.route('/login')
