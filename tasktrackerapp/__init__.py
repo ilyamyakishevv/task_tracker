@@ -82,6 +82,7 @@ def create_app():
         return render_template('user.html', user=sel_user, user_tasks=user_tasks)
 
 
+
     @app.route('/view_tasks')
     def view_tasks():
         title = "Все задачи"
