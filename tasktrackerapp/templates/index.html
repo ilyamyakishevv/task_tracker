@@ -29,10 +29,11 @@
     
           <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li><a href="/" class="nav-link px-2 link-secondary">Home</a></li>
-            <li><a href="add_task" class="nav-link px-2 link-dark">Add Task</a></li>
-            <li><a href="view_tasks" class="nav-link px-2 link-dark">View Tasks</a></li>
-            <li><a href="admin" class="nav-link px-2 link-dark">Manage Users</a></li>
-            <li><a href="all_users" class="nav-link px-2 link-dark">All Users</a></li>
+            <li><a href="/add_task" class="nav-link px-2 link-dark">Add Task</a></li>
+            <li><a href="/view_tasks" class="nav-link px-2 link-dark">View Tasks</a></li>
+            <li><a href="/admin" class="nav-link px-2 link-dark">Manage Users</a></li>
+            <li><a href="/all_users" class="nav-link px-2 link-dark">All Users</a></li>
+
           </ul>
     
           <div class="col-md-3 text-end">
@@ -62,9 +63,9 @@
             </div>
             <div class="col-3">
                 <h2 style="border-bottom:5px solid Gray">Сотрудники</h2>
-                <hr>Артемов Андрей</hr>
-                <hr>Илья Мякишев</hr>
-                <hr>Иван Михайлов</hr>
+                {% for user in users %}
+                <p><a href="/user/{{ user.id }}"> {{ user.firname_lasname }}</a></p>
+                {% endfor %}
 
 </div>
 </div>

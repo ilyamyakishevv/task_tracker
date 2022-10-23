@@ -8,15 +8,14 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-    <title>{{ title }}</title>
+    <title>Изменение задачи</title>
   </head>
   <body>
     <style>
-        body {
-        background-color: Lavender;
-        }
-      </style>
-
+      body {
+      background-color: Lavender;
+      }
+    </style>
     <div class="b-example-divider"></div>
 
     <div class="container">
@@ -29,8 +28,7 @@
           <li><a href="/" class="nav-link px-2 link-secondary">Home</a></li>
           <li><a href="/add_task" class="nav-link px-2 link-dark">Add Task</a></li>
           <li><a href="/view_tasks" class="nav-link px-2 link-dark">View Tasks</a></li>
-          <li><a href="/admin" class="nav-link px-2 link-dark">Manage Users</a></li>
-          <li><a href="/all_users" class="nav-link px-2 link-dark">All Users</a></li>
+          <li><a href="#" class="nav-link px-2 link-dark">Manage Users</a></li>
         </ul>
   
         <div class="col-md-3 text-end">
@@ -38,26 +36,53 @@
         </div>
       </header>
     </div>
- 
-    <div class="container @t-5">
-        <h1>{{ title }}</h1>
-        {% for task in tasks%}
-        <div class="alert alert-info">
-            <h2>{{ task.name }}</h2>
-            <p> {{ task.description }}</p>
-            <p> <b>Статус задачи {{ task.status }}</b></p>
-            <p><b>Создатель {{ task.creator }}</b></p>
-            <p><b>Испольнитель {{ task.responsible }}</b></p>
-            <p><b>Срок исполнения до {{ task.deadline.date() }}</b></p>
-            <a href="task/{{ task.id }}" class="btn btn-primary">Детали задачи</a>
+    <div  class="container">
+      <h1>Изменить задачу</h1>
+      
+    <div class="col-8">
+    <div class="row">
+      <div class="col-5">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="alert alert-warning" role="alert">
+            {% for message in messages %}
+                {{ message }}<br>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
+        {% endif %}
+        {% endwith %}
+    <form action="" method="post"> 
+        {{ form.hidden_tag() }} 
+        <div class="form-group" style="height: 100px">
+            {{ form.name.label}}
+            {{ form.name()}}
+        </div>
+        <div class="form-group" style="height: 100px">
+            {{ form.description.label}}              
+            {{ form.description()}}
+      
+        <div class="form-group" style="height: 100px">
+           {{ form.deadline.label}}
+           {{ form.deadline()}}
+        </div>
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            Statuses
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            {% for status in statuses %}
+            <li><a class="dropdown-item" href="#">{{ status.name }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+        <p>
+            {{ form.edit()}}
+        </p>
       </div>
       </div>
     </div>
 
-
+    </form>
     
 
     <!-- Optional JavaScript; choose one of the two! -->
