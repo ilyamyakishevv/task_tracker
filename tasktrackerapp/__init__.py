@@ -22,17 +22,20 @@ def create_app():
     login_manager.init_app(app)
     login_manager.login_view = 'login'
 
+    
     @login_manager.user_loader
     def load_user(user_id):
         return Users.query.get(user_id)
 
 
     @app.route('/')
+    @login_required
     def index():
         main_page_users = Users.query.all()
         return render_template('index.html', title=app_title, message=message, users=main_page_users)
 
     @app.route('/add_task')
+    @login_required
     def add_task():
         title = "Добавить задачу"
         add_task_form = TaskAdd()
@@ -43,6 +46,7 @@ def create_app():
                         )
 
     @app.route('/adding_task', methods=['POST'])
+    @login_required
     def adding_task():
         adding_form = TaskAdd()
         if adding_form.validate_on_submit():
@@ -70,12 +74,14 @@ def create_app():
         return redirect(url_for('add_task'))
 
     @app.route('/all_users')
+    @login_required
     def all_users():
         title = "Все пользователи"
         users = Users.query.order_by(Users.id).all()
         return render_template('all_users.html', title = title, users=users)
         
     @app.route('/user/<int:id>')
+    @login_required
     def user(id):
         sel_user = Users.query.get(id)
         user_tasks = Tasks.query.filter(Tasks.responsible == sel_user.firname_lasname)
@@ -84,17 +90,20 @@ def create_app():
 
 
     @app.route('/view_tasks')
+    @login_required
     def view_tasks():
         title = "Все задачи"
         tasks = Tasks.query.order_by(Tasks.id).all()
         return render_template('view_tasks.html', title=title, tasks=tasks) 
 
     @app.route('/task/<int:id>')
+    @login_required
     def get_task(id):
         task = Tasks.query.get(id)
         return render_template('task.html', task=task) 
       
     @app.route('/task/<int:id>/delete')
+    @login_required
     def delete_task(id):
         task = Tasks.query.get_or_404(id)
         try: 
@@ -106,6 +115,7 @@ def create_app():
             return flash("При удалении задания произошла ошибка")
 
     @app.route('/task/<int:id>/edit', methods=['POST', 'GET'])
+    @login_required
     def edit_task(id):
         task = Tasks.query.get(id)
         edit_form = TaskAdd()
@@ -165,6 +175,7 @@ def create_app():
         
 
     @app.route('/add_user', methods = ['POST', 'GET'])
+    @login_required
     def add_user():
         form = AddForm()       
         if form.validate_on_submit():     
@@ -185,6 +196,7 @@ def create_app():
 
 
     @app.route('/del_user', methods = ['POST', 'GET'])
+    @login_required
     def del_user():
         form = DeleteForm()
         if form.validate_on_submit():

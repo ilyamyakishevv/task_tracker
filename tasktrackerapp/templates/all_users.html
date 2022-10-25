@@ -28,12 +28,14 @@
           <li><a href="/" class="nav-link px-2 link-secondary">Home</a></li>
           <li><a href="add_task" class="nav-link px-2 link-dark">Add Task</a></li>
           <li><a href="view_tasks" class="nav-link px-2 link-dark">View Tasks</a></li>
-          <li><a href="admin" class="nav-link px-2 link-dark">Manage Users</a></li>
+          {% if current_user.is_admin %}
+            <li><a href="/admin" class="nav-link px-2 link-dark">Manage Users</a></li>
+          {% endif %}
           <li><a href="all_users" class="nav-link px-2 link-dark">All Users</a></li>
         </ul>
   
         <div class="col-md-3 text-end">
-          <button type="button" class="btn btn-outline-primary me-2">Logout</button>
+          <a class="btn btn-primary" href="\logout" role="button">Logout</a>
         </div>
       </header>
     </div>
