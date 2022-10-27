@@ -35,16 +35,20 @@ def create_app():
     @app.route('/add_task')
     def add_task():
         title = "Добавить задачу"
+        all_responsible = Users.query.order_by(Users.id).all()
         add_task_form = TaskAdd()
+        add_task_form.responsible.choices = [r.firname_lasname for r in all_responsible]
         return render_template(
                         'add_task.html',
                         title=title,
                         form=add_task_form
                         )
 
-    @app.route('/adding_task', methods=['POST'])
+    @app.route('/adding_task', methods=['POST', 'GET'])
     def adding_task():
         adding_form = TaskAdd()
+        all_responsible = Users.query.order_by(Users.id).all()
+        adding_form.responsible.choices = [r.firname_lasname for r in all_responsible]
         if adding_form.validate_on_submit():
             task_name = adding_form.name.data
             task_description = adding_form.description.data
@@ -53,7 +57,7 @@ def create_app():
                 flash("Ввелите корректную дату!")
                 return redirect(url_for('add_task'))
             task_creator = current_user.firname_lasname
-            task_responsible = current_user.firname_lasname
+            task_responsible = adding_form.responsible.data
             new_task = Tasks(
                 name=task_name,
                 description=task_description,
@@ -109,7 +113,6 @@ def create_app():
     def edit_task(id):
         task = Tasks.query.get(id)
         edit_form = TaskAdd()
-        statuses = Statuses.query.order_by(Statuses.id).all()
         if edit_form.validate_on_submit():
             task.name = edit_form.name.data
             task.description = edit_form.description.data
@@ -120,7 +123,7 @@ def create_app():
             db.session.commit()
             flash("Задание успешно измненено")
             return redirect(url_for('view_tasks'))
-        return render_template('edit_task.html', form=edit_form, statuses=statuses)
+        return render_template('edit_task.html', form=edit_form)
 
 
     @app.route('/login')
