@@ -12,7 +12,7 @@ def create_statuses():
     for name in status_dict: 
         db.session.add(Statuses(name=name, description=status_dict[name]))
         db.session.commit() 
-
+        
 def create_roles():
     roles_list = ["ADMIN", "USER"]
     for name in roles_list:
@@ -23,4 +23,6 @@ def create_roles():
 if __name__ == '__main__': 
     app = create_app()
     with app.app_context():
-        create_statuses(), create_roles()
+        create_statuses()
+        create_roles()
+
