@@ -34,6 +34,7 @@ def create_app():
         main_page_users = Users.query.all()
         return render_template('index.html', title=app_title, message=message, users=main_page_users)
 
+    
     @app.route('/add_task')
     @login_required
     def add_task():
@@ -100,6 +101,16 @@ def create_app():
         title = "Все задачи"
         tasks = Tasks.query.order_by(Tasks.id).all()
         return render_template('view_tasks.html', title=title, tasks=tasks) 
+
+
+    @app.route('/my_tasks')
+    @login_required
+    def my_tasks():
+        title = "Мои задачи"
+        user = current_user.firname_lasname
+        tasks = Tasks.query.filter(Tasks.responsible == user).all()
+        return render_template('my_tasks.html', title = title, tasks = tasks)
+
 
     @app.route('/task/<int:id>')
     @login_required
@@ -182,7 +193,6 @@ def create_app():
     @login_required
     def add_user():
         form = AddForm()       
-        form.select.choices = [select.role for select in Roles.query.all()]
         if form.validate_on_submit():     
 
             login = form.login.data   
@@ -198,6 +208,7 @@ def create_app():
             
         flash('Пользователь добавлен')
         return redirect(url_for('admin'))
+
 
 
     @app.route('/del_user', methods = ['POST', 'GET'])

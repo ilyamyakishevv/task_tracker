@@ -16,7 +16,7 @@ class AddForm(FlaskForm):
     firname_lasname = StringField("Имя пользователя", validators=[DataRequired()], render_kw={"class": "form-control"})
     email = StringField("E-mail пользователя", validators=[DataRequired()], render_kw={"class": "form-control"})
     role = StringField("Права пользователя", validators=[DataRequired()], render_kw={"class": "form-control"})
-    select = SelectField("Выберите роль пользователя", choices=[])
+    select_roles = SelectField("Выберите роль пользователя")
     submit = SubmitField("Ввод", render_kw={"class":"btn btn-primary"})
 
 
@@ -24,6 +24,8 @@ class AddForm(FlaskForm):
 class DeleteForm(FlaskForm):
     del_login = StringField("Логин удаляемого пользователя", validators=[DataRequired()], render_kw={"class": "form-control"})
     submit2 = SubmitField("Ввод", render_kw={"class":"btn btn-primary"})
+
+
 
     """ class EditForm(FlaskForm):
         edit_login = StringField("Логин изменяемого пользователя", validators=[DataRequired()], render_kw={"class": "form-control"})
