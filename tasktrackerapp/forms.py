@@ -15,8 +15,7 @@ class AddForm(FlaskForm):
     password = PasswordField("Пароль", validators=[DataRequired()],render_kw={"class": "form-control"})
     firname_lasname = StringField("Имя пользователя", validators=[DataRequired()], render_kw={"class": "form-control"})
     email = StringField("E-mail пользователя", validators=[DataRequired()], render_kw={"class": "form-control"})
-    role = StringField("Права пользователя", validators=[DataRequired()], render_kw={"class": "form-control"})
-    select = SelectField("Выберите роль пользователя", choices=[])
+    role = SelectField("Выберете роль пользователя")
     submit = SubmitField("Ввод", render_kw={"class":"btn btn-primary"})
 
 

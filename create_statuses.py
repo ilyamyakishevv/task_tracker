@@ -20,9 +20,8 @@ def create_roles():
         db.session.commit() 
 
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
     app = create_app()
     with app.app_context():
         create_statuses()
         create_roles()
-
