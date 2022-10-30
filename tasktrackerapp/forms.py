@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, SelectField
 from wtforms.validators import DataRequired, ValidationError
-from tasktrackerapp import Users
+from tasktrackerapp.models import Users
 
 
 class LoginForm(FlaskForm):
@@ -16,6 +16,7 @@ class AddForm(FlaskForm):
     firname_lasname = StringField("Имя пользователя", validators=[DataRequired()], render_kw={"class": "form-control"})
     email = StringField("E-mail пользователя", validators=[DataRequired()], render_kw={"class": "form-control"})
     role = StringField("Права пользователя", validators=[DataRequired()], render_kw={"class": "form-control"})
+    select = SelectField("Выберите роль пользователя", choices=[])
     submit = SubmitField("Ввод", render_kw={"class":"btn btn-primary"})
 
 

@@ -1,5 +1,5 @@
 from flask import Flask, render_template, flash, redirect, url_for
-from tasktrackerapp.models import Statuses, Tasks, Users, db
+from tasktrackerapp.models import Statuses, Tasks, Users, Roles, db
 from tasktrackerapp.task_add_form import TaskAdd
 from tasktrackerapp.forms import LoginForm, AddForm, DeleteForm
 from datetime import date
@@ -178,6 +178,7 @@ def create_app():
     @login_required
     def add_user():
         form = AddForm()       
+        form.select.choices = [select.role for select in Roles.query.all()]
         if form.validate_on_submit():     
 
             login = form.login.data   
