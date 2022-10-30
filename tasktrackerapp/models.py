@@ -26,7 +26,6 @@ class Users(db.Model, UserMixin):
     firname_lasname = db.Column(db.String(), index=True)
     email = db.Column(db.String)
     role = db.Column(db.String, nullable=True)
-    phone = db.Column(db.Integer)
 
 
     def set_password(self, password):
@@ -48,7 +47,7 @@ class Statuses(db.Model):
     name = db.Column(db.String, index=True, unique=True, nullable=False)
     description = db.Column(db.String, index=True, nullable=True)
 
-
 class Roles(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True)
-    role = db.Column(db.String, unique=True)
+    role=db.Column(db.String, unique=True)
+
