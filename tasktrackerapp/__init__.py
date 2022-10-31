@@ -173,8 +173,10 @@ def create_app():
     def admin():
         form = AddForm()
         form2 = DeleteForm()
+        roles = Roles.query.order_by(Roles.id).all() 
+        form.role.choices = [role.role for role in roles]
         if current_user.role == 'admin':
-            return render_template('admin.html', title = 'Sign In', form = form, form2 = form2)
+            return render_template('admin.html', title = 'Sign In', form=form, form2=form2)
         else:
             return redirect(url_for('index'))
         

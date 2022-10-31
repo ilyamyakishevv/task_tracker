@@ -1,7 +1,9 @@
+from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_manager
+from sqlalchemy.orm import relationship
 
 db = SQLAlchemy()
 
@@ -47,7 +49,37 @@ class Statuses(db.Model):
     name = db.Column(db.String, index=True, unique=True, nullable=False)
     description = db.Column(db.String, index=True, nullable=True)
 
+
 class Roles(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True)
     role = db.Column(db.String, unique=True)
+
+
+class Changes(db.Model): 
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    name = db.Column(db.String, index=True, unique=True, nullable=False)
+    description = db.Column(db.String, index=True, nullable=True)
+
+
+class Actions(db.Model): 
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    action_user = db.Column(db.Integer, db.ForeignKey(
+        'users.id', 
+        ondelete='CASCADE'),
+        index=True
+        )
+    action_object = db.Column(db.Integer, db.ForeignKey(
+        'tasks.id', 
+        ondelete='CASCADE'),
+        index=True
+        )
+    action_description = db.Column(db.Integer, db.ForeignKey(
+        'changes.id',
+        ondelete='CASCADE'),
+        index=True
+        )
+    action_date =  db.Column(db.DateTime, nullable=True, default=datetime.now())
+    action_task = relationship('Tasks', backref='actions')
+    action_user_rel = relationship('Users', backref='actions')
+    action_change = relationship('Changes', backref='actions')
 
