@@ -1,1 +1,2 @@
-# task_tracker
+# task_tracker project 
+Простой корпоративный задачник. 
