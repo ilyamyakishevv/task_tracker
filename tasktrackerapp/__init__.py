@@ -1,5 +1,6 @@
-from flask import Flask, render_template, flash, redirect, url_for
-from tasktrackerapp.models import Statuses, Tasks, Users, Roles, db
+from urllib import request
+from flask import Flask, render_template, flash, redirect, url_for, request
+from tasktrackerapp.models import Actions, Statuses, Tasks, Users, Roles, db
 from tasktrackerapp.task_add_form import TaskAdd
 from tasktrackerapp.task_edit_form import TaskEdit
 from tasktrackerapp.forms import LoginForm, AddForm, DeleteForm
@@ -74,6 +75,13 @@ def create_app():
                 )
             db.session.add(new_task)
             db.session.commit()
+            new_action = Actions(
+                action_user=current_user.id, 
+                action_object=new_task.id, 
+                action_description=1
+            )
+            db.session.add(new_action)
+            db.session.commit()
             flash("Задание успешно добавлено")
             return redirect(url_for('add_task'))
         flash("Заполните все поля!")
@@ -84,7 +92,7 @@ def create_app():
     def all_users():
         title = "Все пользователи"
         users = Users.query.order_by(Users.id).all()
-        return render_template('all_users.html', title = title, users=users)
+        return render_template('all_users.html', title=title, users=users)
         
     @app.route('/user/<int:id>')
     @login_required
@@ -102,10 +110,25 @@ def create_app():
         tasks = Tasks.query.order_by(Tasks.id).all()
         return render_template('view_tasks.html', title=title, tasks=tasks) 
 
-    @app.route('/task/<int:id>')
+    @app.route('/task/<int:id>', methods=['GET', 'POST'])
     @login_required
     def get_task(id):
         task = Tasks.query.get(id)
+        if "in work" in request.form: 
+            task.status = "IN WORK"
+            db.session.commit()
+        elif "in review" in request.form: 
+            task.status = "IN REVIEW"
+            db.session.commit()
+        elif "in work again" in request.form: 
+            task.status = "IN WORK"
+            db.session.commit()
+        elif "done" in request.form: 
+            task.status = "DONE"
+            db.session.commit()
+        elif "cancel" in request.form:
+            task.status = "DONE"
+            db.session.commit()
         return render_template('task.html', task=task) 
       
     @app.route('/task/<int:id>/delete')
@@ -114,6 +137,13 @@ def create_app():
         task = Tasks.query.get_or_404(id)
         try: 
             db.session.delete(task)
+            db.session.commit()
+            new_action = Actions(
+                action_user=current_user.id, 
+                action_object=task.id, 
+                action_description=2
+            )
+            db.session.add(new_action)
             db.session.commit()
             return redirect(url_for('view_tasks'))
         except:
@@ -132,6 +162,13 @@ def create_app():
             if task.deadline < date.today():
                 flash("Ввелите корректную дату!")
                 return redirect(url_for('task_edit'))
+            db.session.commit()
+            new_action = Actions(
+                action_user=current_user.id, 
+                action_object=task.id, 
+                action_description=3
+            )
+            db.session.add(new_action)
             db.session.commit()
             flash("Задание успешно измненено")
             return redirect(url_for('view_tasks'))
@@ -156,7 +193,6 @@ def create_app():
                 login_user(user)
                 flash('Вы успешли авторизировались')
                 return redirect(url_for('index'))
-
         flash('Неправильное имя или пароль')
         return redirect(url_for('login'))
 
@@ -197,8 +233,7 @@ def create_app():
             user_info = Users(login=login, firname_lasname=firname_lasname, email=email, role=role)     
             user_info.set_password(password1)
             db.session.add(user_info)  
-            db.session.commit()         
-            
+            db.session.commit()                
         flash('Пользователь добавлен')
         return redirect(url_for('admin'))
 
