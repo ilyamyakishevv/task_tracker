@@ -60,6 +60,7 @@ class Changes(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True)
     name = db.Column(db.String, index=True, unique=True, nullable=False)
     description = db.Column(db.String, index=True, nullable=True)
+    action = relationship('Actions', backref='changes')
     
 
 

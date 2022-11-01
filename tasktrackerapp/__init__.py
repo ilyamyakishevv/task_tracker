@@ -1,6 +1,6 @@
 from urllib import request
 from flask import Flask, render_template, flash, redirect, url_for, request
-from tasktrackerapp.models import Actions, Statuses, Tasks, Users, Roles, db
+from tasktrackerapp.models import Actions, Statuses, Tasks, Users, Roles, Changes, db
 from tasktrackerapp.task_add_form import TaskAdd
 from tasktrackerapp.task_edit_form import TaskEdit
 from tasktrackerapp.forms import LoginForm, AddForm, DeleteForm
@@ -14,8 +14,6 @@ from flask_migrate import Migrate
 def create_app():
     app = Flask(__name__)
     app.config.from_pyfile('config.py')
-    app_title = "Task tracker LP26 project"
-    message = "Project is still in progress"
     db.init_app(app)
     migrate = Migrate(app, db)
 
@@ -33,8 +31,9 @@ def create_app():
     @app.route('/')
     @login_required
     def index():
+        actions = Actions.query.all()
         main_page_users = Users.query.all()
-        return render_template('index.html', title=app_title, message=message, users=main_page_users)
+        return render_template('index.html', users=main_page_users, actions=actions)
 
     @app.route('/add_task')
     @login_required
@@ -158,8 +157,8 @@ def create_app():
             task.status = "DONE"
             db.session.commit()
             new_action = Actions(
-                action_user=current_user.id, 
-                action_object=task.id, 
+                action_user=current_user.id,
+                action_object=task.id,
                 action_description=8
             )
             db.session.add(new_action)

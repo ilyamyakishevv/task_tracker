@@ -61,9 +61,10 @@
                     {% endif %}
                 {% endwith %}
                 <h2 style="border-bottom:5px solid gray" padding:3px>Активность по задачам</h2>  
-                <hr>Артемов Андрей взял задачу #ID354123 в работу</hr>
-                <hr>Илья Мякишев оставил новый комментарий в задаче #ID354119</hr>   
-                <hr>Иван Михайлов закрыл задачу #ID354123</hr>   
+               {% for action in actions %}
+                <hr>{{action.action_date.strftime('%d.%m.%Y %H:%M')}} Пользователь {{action.users.firname_lasname }} 
+                {{ action.changes.description }} номер {{ action.tasks.id }}</hr>  
+              {% endfor %}
             </div>
             <div class="col-3">
                 <h2 style="border-bottom:5px solid Gray">Сотрудники</h2>
