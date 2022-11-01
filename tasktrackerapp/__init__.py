@@ -1,7 +1,7 @@
-from flask import Flask, render_template, flash, redirect, url_for
-from tasktrackerapp.models import Statuses, Tasks, Users, Roles, db
+from flask import Flask, render_template, flash, redirect, url_for, request
+from tasktrackerapp.models import Statuses, Tasks, Users, Roles, Comment, db
 from tasktrackerapp.task_add_form import TaskAdd
-from tasktrackerapp.forms import LoginForm, AddForm, DeleteForm
+from tasktrackerapp.forms import LoginForm, AddForm, DeleteForm, CommentForm
 from datetime import date
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -116,8 +116,29 @@ def create_app():
     @login_required
     def get_task(id):
         task = Tasks.query.get(id)
-        return render_template('task.html', task=task) 
-      
+        comment_form = CommentForm(task_id=task.id)
+        return render_template('task.html', task=task, comment_form=comment_form) 
+
+    @app.route('/task/comment', methods=['POST'])
+    def add_comment():
+        form = CommentForm()
+        if form.validate_on_submit():
+            if Tasks.query.filter(Tasks.id == form.task_id.data).first():
+                comment = Comment(text=form.comment_text.data, task_id=form.task_id.data, user_id=current_user.id)
+                db.session.add(comment)
+                db.session.commit()
+                flash('Комментарий успешно добавлен')
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    flash('Ошибка в заполнении поля "{}": - {}'.format(
+                        getattr(form, field).label.text,
+                        error
+                    ))
+        return redirect(request.referrer)
+
+
+
     @app.route('/task/<int:id>/delete')
     @login_required
     def delete_task(id):

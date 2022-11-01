@@ -56,8 +56,38 @@
             <p><b>Срок исполнения до {{ task.deadline.date() }}</b></p>
             <a href="/task/{{ task.id }}/edit" class="btn btn-success">Редактировать задау</a>
             <a href="/task/{{ task.id }}/delete" class="btn btn-danger">Удалить задачу</a>
+          </div>
+    </div>
+
+    <div class="container @t-5">
+      <div class="task-comment">
+        {% if task.comments %}
+        <h3>Комментарии:</h3>
+        {% for comment in task.comments %}
+        <div class="card">
+          <div class="card-body">
+            <p class="card-text">{{ comment.text }}</p>
+            <p class="card-text">
+                <small>Опубликовано: {{ comment.created.strftime('%d.%m.%Y') }} | 
+                    Автор: {{ comment.user.firname_lasname }}</small>
+            </p>
         </div>
     </div>
+    {% endfor %}
+{% endif %}
+
+    <form action="{{ url_for('add_comment') }}" method="POST">
+      {{ comment_form.hidden_tag() }}
+      <div class="form-group">
+          {{ comment_form.comment_text.label }}
+          {{ comment_form.comment_text() }}
+      </div>
+      {{ comment_form.submit() }}
+    </form>
+    </div>
+    </div>
+
+
       </div>
       </div>
     </div>

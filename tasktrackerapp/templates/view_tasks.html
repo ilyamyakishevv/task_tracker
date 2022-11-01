@@ -55,6 +55,7 @@
             <p><b>Создатель {{ task.creator }}</b></p>
             <p><b>Испольнитель {{ task.responsible }}</b></p>
             <p><b>Срок исполнения до {{ task.deadline.date() }}</b></p>
+            <p><b>Комментарии: {{ task.comments_count() }}</b></p>
             <a href="task/{{ task.id }}" class="btn btn-primary">Детали задачи</a>
         </div>
         {% endfor %}
