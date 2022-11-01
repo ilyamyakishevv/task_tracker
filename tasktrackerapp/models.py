@@ -16,6 +16,7 @@ class Tasks(db.Model):
     responsible = db.Column(db.String, nullable=False)
     status = db.Column(db.String, nullable=False, default="OPEN")
     deadline = db.Column(db.DateTime, nullable=True)
+    action = relationship('Actions', backref='tasks')
 
     def __repr__(self):
         return f"Task {self.id} {self.name} in status {self.status}"
@@ -28,7 +29,7 @@ class Users(db.Model, UserMixin):
     firname_lasname = db.Column(db.String(), index=True)
     email = db.Column(db.String)
     role = db.Column(db.String, nullable=True)
-
+    action = relationship('Actions', backref='users')
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
@@ -59,6 +60,7 @@ class Changes(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True)
     name = db.Column(db.String, index=True, unique=True, nullable=False)
     description = db.Column(db.String, index=True, nullable=True)
+    
 
 
 class Actions(db.Model): 
@@ -73,13 +75,11 @@ class Actions(db.Model):
         ondelete='CASCADE'),
         index=True
         )
-    action_description = db.Column(db.Integer, db.ForeignKey(
+    description = db.Column(db.Integer, db.ForeignKey(
         'changes.id',
         ondelete='CASCADE'),
         index=True
         )
-    action_date =  db.Column(db.DateTime, nullable=True, default=datetime.now())
-    action_task = relationship('Tasks', backref='actions')
-    action_user_rel = relationship('Users', backref='actions')
-    action_change = relationship('Changes', backref='actions')
+    action_date = db.Column(db.DateTime, nullable=True, default=datetime.now())
+
 
