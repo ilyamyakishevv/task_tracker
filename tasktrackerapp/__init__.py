@@ -117,17 +117,52 @@ def create_app():
         if "in work" in request.form: 
             task.status = "IN WORK"
             db.session.commit()
+            new_action = Actions(
+                action_user=current_user.id, 
+                action_object=task.id, 
+                action_description=4
+            )
+            db.session.add(new_action)
+            db.session.commit()
         elif "in review" in request.form: 
             task.status = "IN REVIEW"
+            db.session.commit()
+            new_action = Actions(
+                action_user=current_user.id, 
+                action_object=task.id, 
+                action_description=5
+            )
+            db.session.add(new_action)
             db.session.commit()
         elif "in work again" in request.form: 
             task.status = "IN WORK"
             db.session.commit()
+            new_action = Actions(
+                action_user=current_user.id, 
+                action_object=task.id, 
+                action_description=7
+            )
+            db.session.add(new_action)
+            db.session.commit()
         elif "done" in request.form: 
             task.status = "DONE"
             db.session.commit()
+            new_action = Actions(
+                action_user=current_user.id, 
+                action_object=task.id, 
+                action_description=6
+            )
+            db.session.add(new_action)
+            db.session.commit()
         elif "cancel" in request.form:
             task.status = "DONE"
+            db.session.commit()
+            new_action = Actions(
+                action_user=current_user.id, 
+                action_object=task.id, 
+                action_description=8
+            )
+            db.session.add(new_action)
             db.session.commit()
         return render_template('task.html', task=task) 
       

@@ -75,7 +75,7 @@ class Actions(db.Model):
         ondelete='CASCADE'),
         index=True
         )
-    description = db.Column(db.Integer, db.ForeignKey(
+    action_description = db.Column(db.Integer, db.ForeignKey(
         'changes.id',
         ondelete='CASCADE'),
         index=True
