@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_manager
+from datetime import datetime
 from sqlalchemy.orm import relationship
 
 db = SQLAlchemy()
@@ -17,6 +18,9 @@ class Tasks(db.Model):
     status = db.Column(db.String, nullable=False, default="OPEN")
     deadline = db.Column(db.DateTime, nullable=True)
     action = relationship('Actions', backref='tasks')
+
+    def comments_count(self):
+        return Comment.query.filter(Comment.task_id == self.id).count()
 
     def __repr__(self):
         return f"Task {self.id} {self.name} in status {self.status}"
@@ -93,3 +97,22 @@ class Actions(db.Model):
 
 
 
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.Text(), nullable = False)
+    created = db.Column(db.DateTime, nullable = False, default = datetime.now())
+    task_id = db.Column(
+        db.Integer,
+        db.ForeignKey('tasks.id', ondelete = 'CASCADE'),
+        index = True
+    )
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id', ondelete = 'CASCADE'),
+        index = True
+    )
+    tasks = relationship('Tasks', backref = 'comments')
+    user = relationship('Users', backref = 'comments')
+    def __repr__(self):
+        return '<Comment {}>'.format(self.id)

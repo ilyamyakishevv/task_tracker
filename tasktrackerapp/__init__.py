@@ -1,9 +1,10 @@
+
+from tasktrackerapp.forms import LoginForm, AddForm, DeleteForm, CommentForm
 from urllib import request
 from flask import Flask, render_template, flash, redirect, url_for, request
 from tasktrackerapp.models import Actions, Statuses, Tasks, Users, Roles, Changes, db
 from tasktrackerapp.task_add_form import TaskAdd
 from tasktrackerapp.task_edit_form import TaskEdit
-from tasktrackerapp.forms import LoginForm, AddForm, DeleteForm
 from datetime import date
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -35,6 +36,7 @@ def create_app():
         main_page_users = Users.query.all()
         return render_template('index.html', users=main_page_users, actions=actions)
 
+    
     @app.route('/add_task')
     @login_required
     def add_task():
@@ -108,6 +110,43 @@ def create_app():
         title = "Все задачи"
         tasks = Tasks.query.order_by(Tasks.id).all()
         return render_template('view_tasks.html', title=title, tasks=tasks) 
+
+
+
+    @app.route('/my_tasks')
+    @login_required
+    def my_tasks():
+        title = "Мои задачи"
+        user = current_user.firname_lasname
+        tasks = Tasks.query.filter(Tasks.responsible == user).all()
+        return render_template('my_tasks.html', title = title, tasks = tasks)
+
+
+    @app.route('/task/<int:id>')
+    @login_required
+    def get_task(id):
+        task = Tasks.query.get(id)
+        comment_form = CommentForm(task_id=task.id)
+        return render_template('task.html', task=task, comment_form=comment_form) 
+
+    @app.route('/task/comment', methods=['POST'])
+    def add_comment():
+        form = CommentForm()
+        if form.validate_on_submit():
+            if Tasks.query.filter(Tasks.id == form.task_id.data).first():
+                comment = Comment(text=form.comment_text.data, task_id=form.task_id.data, user_id=current_user.id)
+                db.session.add(comment)
+                db.session.commit()
+                flash('Комментарий успешно добавлен')
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    flash('Ошибка в заполнении поля "{}": - {}'.format(
+                        getattr(form, field).label.text,
+                        error
+                    ))
+        return redirect(request.referrer)
+
 
     @app.route('/task/<int:id>', methods=['GET', 'POST'])
     @login_required
@@ -225,7 +264,7 @@ def create_app():
 
     @app.route('/add_user', methods = ['POST', 'GET'])
     @login_required
-    def add_user():
+    def add_user():    
         form = AddForm()
         roles = Roles.query.order_by(Roles.id).all()     
         form.role.choices = [role.role for select in roles]
@@ -242,6 +281,7 @@ def create_app():
             db.session.commit()                
         flash('Пользователь добавлен')
         return redirect(url_for('admin'))
+
 
 
     @app.route('/del_user', methods = ['POST', 'GET'])
