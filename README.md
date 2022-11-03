@@ -22,18 +22,18 @@
 
 -Установить переменную среды
 
-..code-block::
-$ export FLASK_APP=tasktrackerapp
+    $ export FLASK_APP=tasktrackerapp
+
 
 -Применить изменения к БД
 
-..code-block:: text
     $ flask db upgrade
+
 
 -Заполните БД статусами, ролями пользователей и возможными действиями с задачами (при необходимости можете добавить свои роли, статусы или действия, отредоактировав скрипт):
 
-.. code-block:: text
-python create_statuses.py
+    $ python create_statuses.py
+
 
 -Создайте перввого админн-пользователя запустив скрипт: 
 .. code-block:: text
@@ -43,9 +43,9 @@ python create_admin.py
 =======
 В консоли (не забудьте активировать виртуальное окружение) пропишите:
 
-.. code-block:: text
-$ ./run.sh (для Linux) 
-.. code-block:: text
-run.bat (для Windows)
+
+    $ run.sh
+
+    >run.bat 
 
 
