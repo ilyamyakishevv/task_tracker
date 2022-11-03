@@ -196,7 +196,7 @@ def create_app():
         if form.validate_on_submit():
             user = Users.query.filter(Users.login == form.username.data).first()
             if user and user.check_password(form.password.data):
-                login_user(user)
+                login_user(user, remember=form.remember.data)
                 flash('Вы успешли авторизировались')
                 return redirect(url_for('index'))
         flash('Неправильное имя или пароль')
