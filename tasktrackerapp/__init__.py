@@ -113,53 +113,28 @@ def create_app():
     @login_required
     def get_task(id):
         task = Tasks.query.get(id)
-        if "in work" in request.form: 
-            task.status = "IN WORK"
-            db.session.commit()
+        if request.method == "POST":
             new_action = Actions(
-                action_user=current_user.id, 
-                action_object=task.id, 
-                action_description=Actions.STATUS_IN_WORK
+                    action_user=current_user.id,
+                    action_object=task.id
             )
+            if "in work" in request.form: 
+                task.status = "IN WORK"
+                new_action.action_description = Actions.STATUS_IN_WORK
+            elif "in review" in request.form: 
+                task.status = "IN REVIEW"
+                new_action.action_description = Actions.STATUS_IN_REVIEW
+            elif "in work again" in request.form: 
+                task.status = "IN WORK"
+                new_action.action_description = Actions.STATUS_IN_WORK_AGAIN
+            elif "done" in request.form:
+                task.status = "DONE"
+                new_action.action_description = Actions.STATUS_DONE
+            elif "cancel" in request.form:
+                task.status = "DONE"
+                new_action.action_description = Actions.CANCELATION 
             db.session.add(new_action)
-        elif "in review" in request.form: 
-            task.status = "IN REVIEW"
-            db.session.commit()
-            new_action = Actions(
-                action_user=current_user.id, 
-                action_object=task.id, 
-                action_description=Actions.STATUS_IN_REVIEW
-            )
-            db.session.add(new_action)
-        elif "in work again" in request.form: 
-            task.status = "IN WORK"
-            db.session.commit()
-            new_action = Actions(
-                action_user=current_user.id, 
-                action_object=task.id, 
-                action_description=Actions.STATUS_IN_WORK_AGAIN
-            )
-            db.session.add(new_action)
-        elif "done" in request.form: 
-            task.status = "DONE"
-            db.session.commit()
-            new_action = Actions(
-                action_user=current_user.id, 
-                action_object=task.id, 
-                action_description=Actions.STATUS_DONE
-            )
-            db.session.add(new_action)
-        elif "cancel" in request.form:
-            task.status = "DONE"
-            db.session.commit()
-            new_action = Actions(
-                action_user=current_user.id,
-                action_object=task.id,
-                action_description=Actions.CANCELATION
-                
-            )
-            db.session.add(new_action)
-        db.session.commit()
+            db.session.commit()   
         return render_template('task.html', task=task) 
       
     @app.route('/task/<int:id>/delete')
