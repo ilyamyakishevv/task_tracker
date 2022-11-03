@@ -21,19 +21,20 @@ def create_roles():
 
 
 def create_changes():
-    changes_dict = {
-            "ADD TASK" : "добавил задачу",
-            "DELETE TASK" : "удалил задачу",
-            "EDIT TASK" : "изменил задачу",
-            "STATUS IN WORK" : "взял в работу задачу",
-            "STATUS IN REVIEW" : "выполнил задачу",
-            "STATUS DONE" : "одобрил задачу",
-            "STATUS IN WORK AGAIN" : "отправил на доработку задачу", 
-            "CANCELATION" : "отменил выполнение задачи"
-        }
-    for name in changes_dict: 
-        db.session.add(Changes(name=name, description=changes_dict[name]))
-        db.session.commit() 
+    changes_list = [
+            ("ADD TASK","добавил задачу"),
+            ("DELETE TASK", "удалил задачу"),
+            ("EDIT TASK", "изменил задачу"),
+            ("STATUS IN WORK","взял в работу задачу"),
+            ("STATUS IN REVIEW", "выполнил задачу"),
+            ("STATUS DONE","одобрил задачу"),
+            ("STATUS IN WORK AGAIN", "отправил на доработку задачу"), 
+            ("CANCELATION", "отменил выполнение задачи")
+    ]
+    for change in changes_list: 
+        for name, desc in change: 
+            db.session.add(Changes(name=name, description=desc))
+            db.session.commit() 
 
 if __name__ == '__main__':
     app = create_app()
