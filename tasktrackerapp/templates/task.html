@@ -51,11 +51,34 @@
             <p> {{ task.description }}</p>
             <p> <b>Статус задачи {{ task.status }}</b></p>
             <p><b>Создатель {{ task.creator }}</b></p>
-            <p><b>Испольнитель {{ task.responsible }}</b></p>
+            <p><b>Исполнитель {{ task.responsible }}</b></p>
             <p><b>Срок исполнения до {{ task.deadline.date() }}</b></p>
+            {% if  current_user.firname_lasname == task.responsible %}
+            <form method="post">
+            {% if task.status == "OPEN" %}
+            <input type="submit" name="in work" value="Взять в работу" class="btn btn-info">
+            {% endif %}
+            {% if task.status == "IN WORK" %}
+            <input type="submit" name="in review" value="Отправить на проверку" class="btn btn-success">
+            {% endif %}
+          </form>
+          {% endif %}
+          {% if  current_user.firname_lasname == task.creator %}
+            <form method="post">
+            {% if task.status == "IN REVIEW" %}
+            <input type="submit" name="in work again" value="Отправить на доработку" class="btn btn-warning">
+            <input type="submit" name="done" value="Одобрить задачу" class="btn btn-info">
+            {% endif %}
+            {% if task.status != "DONE" %}
+            <input type="submit" name="cancel" value="Отменить задачу" class="btn btn-dark">
+            {% endif %}
+          </form>
+          {% endif %}
+          {% if  current_user.firname_lasname == task.creator %}
             <a href="/task/{{ task.id }}/edit" class="btn btn-success">Редактировать задау</a>
             <a href="/task/{{ task.id }}/delete" class="btn btn-danger">Удалить задачу</a>
         </div>
+        {% endif %}
     </div>
       </div>
       </div>

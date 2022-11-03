@@ -1,5 +1,6 @@
-from flask import Flask, render_template, flash, redirect, url_for
-from tasktrackerapp.models import Statuses, Tasks, Users, Roles, db
+from urllib import request
+from flask import Flask, render_template, flash, redirect, url_for, request
+from tasktrackerapp.models import Actions, Statuses, Tasks, Users, Roles, Changes, db
 from tasktrackerapp.task_add_form import TaskAdd
 from tasktrackerapp.task_edit_form import TaskEdit
 from tasktrackerapp.forms import LoginForm, AddForm, DeleteForm
@@ -13,8 +14,6 @@ from flask_migrate import Migrate
 def create_app():
     app = Flask(__name__)
     app.config.from_pyfile('config.py')
-    app_title = "Task tracker LP26 project"
-    message = "Project is still in progress"
     db.init_app(app)
     migrate = Migrate(app, db)
 
@@ -32,8 +31,9 @@ def create_app():
     @app.route('/')
     @login_required
     def index():
+        actions = Actions.query.order_by(Actions.action_date).all()
         main_page_users = Users.query.all()
-        return render_template('index.html', title=app_title, message=message, users=main_page_users)
+        return render_template('index.html', users=main_page_users, actions=actions)
 
     @app.route('/add_task')
     @login_required
@@ -74,6 +74,13 @@ def create_app():
                 )
             db.session.add(new_task)
             db.session.commit()
+            new_action = Actions(
+                action_user=current_user.id, 
+                action_object=new_task.id, 
+                action_description=Actions.ADD_TASK
+            )
+            db.session.add(new_action)
+            db.session.commit()
             flash("Задание успешно добавлено")
             return redirect(url_for('add_task'))
         flash("Заполните все поля!")
@@ -84,7 +91,7 @@ def create_app():
     def all_users():
         title = "Все пользователи"
         users = Users.query.order_by(Users.id).all()
-        return render_template('all_users.html', title = title, users=users)
+        return render_template('all_users.html', title=title, users=users)
         
     @app.route('/user/<int:id>')
     @login_required
@@ -102,10 +109,32 @@ def create_app():
         tasks = Tasks.query.order_by(Tasks.id).all()
         return render_template('view_tasks.html', title=title, tasks=tasks) 
 
-    @app.route('/task/<int:id>')
+    @app.route('/task/<int:id>', methods=['GET', 'POST'])
     @login_required
     def get_task(id):
         task = Tasks.query.get(id)
+        if request.method == "POST":
+            new_action = Actions(
+                    action_user=current_user.id,
+                    action_object=task.id
+            )
+            if "in work" in request.form: 
+                task.status = "IN WORK"
+                new_action.action_description = Actions.STATUS_IN_WORK
+            elif "in review" in request.form: 
+                task.status = "IN REVIEW"
+                new_action.action_description = Actions.STATUS_IN_REVIEW
+            elif "in work again" in request.form: 
+                task.status = "IN WORK"
+                new_action.action_description = Actions.STATUS_IN_WORK_AGAIN
+            elif "done" in request.form:
+                task.status = "DONE"
+                new_action.action_description = Actions.STATUS_DONE
+            elif "cancel" in request.form:
+                task.status = "DONE"
+                new_action.action_description = Actions.CANCELATION 
+            db.session.add(new_action)
+            db.session.commit()   
         return render_template('task.html', task=task) 
       
     @app.route('/task/<int:id>/delete')
@@ -114,6 +143,13 @@ def create_app():
         task = Tasks.query.get_or_404(id)
         try: 
             db.session.delete(task)
+            db.session.commit()
+            new_action = Actions(
+                action_user=current_user.id, 
+                action_object=task.id, 
+                action_description=Actions.DELETE_TASK
+            )
+            db.session.add(new_action)
             db.session.commit()
             return redirect(url_for('view_tasks'))
         except:
@@ -132,6 +168,13 @@ def create_app():
             if task.deadline < date.today():
                 flash("Ввелите корректную дату!")
                 return redirect(url_for('task_edit'))
+            db.session.commit()
+            new_action = Actions(
+                action_user=current_user.id, 
+                action_object=task.id, 
+                action_description=Actions.EDIT_TASK
+            )
+            db.session.add(new_action)
             db.session.commit()
             flash("Задание успешно измненено")
             return redirect(url_for('view_tasks'))
@@ -156,7 +199,6 @@ def create_app():
                 login_user(user)
                 flash('Вы успешли авторизировались')
                 return redirect(url_for('index'))
-
         flash('Неправильное имя или пароль')
         return redirect(url_for('login'))
 
@@ -173,8 +215,10 @@ def create_app():
     def admin():
         form = AddForm()
         form2 = DeleteForm()
+        roles = Roles.query.order_by(Roles.id).all() 
+        form.role.choices = [role.role for role in roles]
         if current_user.role == 'admin':
-            return render_template('admin.html', title = 'Sign In', form = form, form2 = form2)
+            return render_template('admin.html', title = 'Sign In', form=form, form2=form2)
         else:
             return redirect(url_for('index'))
         
@@ -195,8 +239,7 @@ def create_app():
             user_info = Users(login=login, firname_lasname=firname_lasname, email=email, role=role)     
             user_info.set_password(password1)
             db.session.add(user_info)  
-            db.session.commit()         
-            
+            db.session.commit()                
         flash('Пользователь добавлен')
         return redirect(url_for('admin'))
 
