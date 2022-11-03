@@ -2,7 +2,7 @@
 from tasktrackerapp.forms import LoginForm, AddForm, DeleteForm, CommentForm
 from urllib import request
 from flask import Flask, render_template, flash, redirect, url_for, request
-from tasktrackerapp.models import Actions, Statuses, Tasks, Users, Roles, Changes, db
+from tasktrackerapp.models import Actions, Comment, Tasks, Users, Roles, db
 from tasktrackerapp.task_add_form import TaskAdd
 from tasktrackerapp.task_edit_form import TaskEdit
 from datetime import date
@@ -121,14 +121,7 @@ def create_app():
         tasks = Tasks.query.filter(Tasks.responsible == user).all()
         return render_template('my_tasks.html', title = title, tasks = tasks)
 
-
-    @app.route('/task/<int:id>')
-    @login_required
-    def get_task(id):
-        task = Tasks.query.get(id)
-        comment_form = CommentForm(task_id=task.id)
-        return render_template('task.html', task=task, comment_form=comment_form) 
-
+        
     @app.route('/task/comment', methods=['POST'])
     def add_comment():
         form = CommentForm()
@@ -152,6 +145,7 @@ def create_app():
     @login_required
     def get_task(id):
         task = Tasks.query.get(id)
+        comment_form = CommentForm(task_id=task.id)
         if request.method == "POST":
             new_action = Actions(
                     action_user=current_user.id,
@@ -174,7 +168,8 @@ def create_app():
                 new_action.action_description = Actions.CANCELATION 
             db.session.add(new_action)
             db.session.commit()   
-        return render_template('task.html', task=task) 
+        return render_template('task.html', task=task, comment_form=comment_form) 
+
       
     @app.route('/task/<int:id>/delete')
     @login_required

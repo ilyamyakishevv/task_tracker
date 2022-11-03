@@ -79,6 +79,7 @@
             <a href="/task/{{ task.id }}/edit" class="btn btn-success">Редактировать задау</a>
             <a href="/task/{{ task.id }}/delete" class="btn btn-danger">Удалить задачу</a>
           </div>
+          {% endif %}
     </div>
 
     <div class="container @t-5">
@@ -94,10 +95,10 @@
                     Автор: {{ comment.user.firname_lasname }}</small>
             </p>
         </div>
-        {% endif %}
+        
     </div>
     {% endfor %}
-{% endif %}
+    {% endif %}
 
     <form action="{{ url_for('add_comment') }}" method="POST">
       {{ comment_form.hidden_tag() }}
