@@ -16,36 +16,36 @@ task_tracker_project
 ==========
 Создайте виртуальное окружение и активируйте его. Установите зависимости:
 
-    pip install -r requirements.txt
+   `pip install -r requirements.txt`
 
 
 Настройка
 ---------
 - Cконфигурируйте приложение, для этого запустите скрипт (при необходиости отредактируйте конфиг используя собственные значения)
 
-   `$ python create_config.py `
+   `python create_config.py`
  
 - Примените миграции к своей БД, для этого нужно выполнить в консоли следующие операции:
 
 Установить переменную среды
 
-    $ export FLASK_APP=tasktrackerapp
+ `export FLASK_APP=tasktrackerapp`
 
 
 Применить изменения к БД
 
-    $ flask db upgrade
+ `flask db upgrade`
 
 
 - Заполните БД статусами, ролями пользователей и возможными действиями с задачами (при необходимости можете добавить свои роли, статусы или действия, отредоактировав скрипт):
 
 
-`$ python create_statuses_roles_changes.py`
+``python create_statuses_roles_changes.py`
 
 
 - Создайте перввого админн-пользователя запустив скрипт: 
 
-     `$ python create_admin.py`
+ `python create_admin.py`
 
 Запуск
 =======
