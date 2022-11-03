@@ -29,7 +29,7 @@ class DeleteForm(FlaskForm):
 class CommentForm(FlaskForm):
     task_id = HiddenField('ID новости', validators=[DataRequired()])
     comment_text = StringField('Ваш комментарий', validators=[DataRequired()], render_kw={"class": "form-control"})
-    submit = SubmitField('Отправить', render_kw={"class":"btn primary"})
+    submit = SubmitField('Отправить', render_kw={"class": "btn btn-primary"})
 
 
 

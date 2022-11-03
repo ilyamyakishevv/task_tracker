@@ -28,13 +28,14 @@ def create_changes():
             ("STATUS IN WORK","взял в работу задачу"),
             ("STATUS IN REVIEW", "выполнил задачу"),
             ("STATUS DONE","одобрил задачу"),
-            ("STATUS IN WORK AGAIN", "отправил на доработку задачу"), 
-            ("CANCELATION", "отменил выполнение задачи")
+            ("STATUS IN WORK AGAIN", "отправил на доработку задачу"),
+            ("CANCELATION", "отменил выполнение задачи"), 
+            ("COMMENT", "оставил комментарий к задаче")
     ]
     for change in changes_list: 
-        for name, desc in change: 
-            db.session.add(Changes(name=name, description=desc))
-            db.session.commit() 
+        name, desc = change
+        db.session.add(Changes(name=name, description=desc))
+        db.session.commit() 
 
 if __name__ == '__main__':
     app = create_app()

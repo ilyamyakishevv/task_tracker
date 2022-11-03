@@ -131,6 +131,13 @@ def create_app():
                 db.session.add(comment)
                 db.session.commit()
                 flash('Комментарий успешно добавлен')
+                new_action = Actions(
+                    action_user=current_user.id, 
+                    action_object=comment.task_id,
+                    action_description=Actions.COMMENT
+                )
+                db.session.add(new_action)
+                db.session.commit()
         else:
             for field, errors in form.errors.items():
                 for error in errors:

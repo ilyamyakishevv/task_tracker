@@ -94,6 +94,7 @@ class Actions(db.Model):
     STATUS_DONE = 6
     STATUS_IN_WORK_AGAIN = 7
     CANCELATION = 8
+    COMMENT = 9
 
 
 

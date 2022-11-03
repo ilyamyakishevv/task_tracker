@@ -66,8 +66,8 @@
                   <card>
                  {% for action in actions %}
                  
-                  <hr>{{action.action_date.strftime('%d.%m.%Y %H:%M')}} Пользователь {{action.users.firname_lasname }} 
-                  {{ action.changes.description }} номер {{ action.action_object }}</hr>  
+                  <hr>{{action.action_date.strftime('%d.%m.%Y %H:%M')}} Пользователь <a href="user/{{ action.action_user}}">  {{action.users.firname_lasname }}</a> 
+                  {{ action.changes.description }} номер <a href="task/{{ action.action_object}}"> {{ action.action_object }}</a></hr>  
                 {% endfor %}
                 </card>
                 </div>
