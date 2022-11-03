@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, SelectField, HiddenField
+from wtforms import StringField, PasswordField, SubmitField, SelectField, HiddenField, BooleanField
 from wtforms.validators import DataRequired, ValidationError
 from tasktrackerapp.models import Users
 from flask import flash
