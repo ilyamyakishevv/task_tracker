@@ -1,0 +1,12 @@
+import os
+
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+SECRET_KEY = "ваш секретный ключ приложения"
+
+SQLALCHEMY_DATABASE_URI = "путь к вашей базе данных" (default 'sqlite:///' + os.path.join(basedir, '..', 'tasktracker_tasks.db'))
+
+SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+GLOBAL_PATH = os.path.join(basedir, 'awesomeapp')
