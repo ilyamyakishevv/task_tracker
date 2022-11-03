@@ -14,7 +14,6 @@ class TaskEdit(FlaskForm):
         validators=[DataRequired()],
         render_kw={'class': 'form-control'}
         )
-    status = SelectField("Статус задачи")
 
     deadline = DateField(
         "Срок исполнения до",
@@ -23,6 +22,5 @@ class TaskEdit(FlaskForm):
         )
     edit = SubmitField(
         "Изменить задачу",
-        validators=[DataRequired()],
         render_kw={'class': 'btn btn-primary'}
         )
