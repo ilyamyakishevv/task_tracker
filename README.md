@@ -22,7 +22,7 @@
 
 -Установить переменную среды
 
-..code-block:: text
+..code-block::
 $ export FLASK_APP=tasktrackerapp
 
 -Применить изменения к БД
