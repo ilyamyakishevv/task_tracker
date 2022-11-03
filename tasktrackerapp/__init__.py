@@ -31,7 +31,7 @@ def create_app():
     @app.route('/')
     @login_required
     def index():
-        actions = Actions.query.all()
+        actions = Actions.query.order_by(Actions.action_date).all()
         main_page_users = Users.query.all()
         return render_template('index.html', users=main_page_users, actions=actions)
 
@@ -77,7 +77,7 @@ def create_app():
             new_action = Actions(
                 action_user=current_user.id, 
                 action_object=new_task.id, 
-                action_description=1
+                action_description=Actions.ADD_TASK
             )
             db.session.add(new_action)
             db.session.commit()
@@ -119,47 +119,39 @@ def create_app():
             new_action = Actions(
                 action_user=current_user.id, 
                 action_object=task.id, 
-                action_description=4
+                action_description=Actions.STATUS_IN_WORK
             )
-            db.session.add(new_action)
-            db.session.commit()
         elif "in review" in request.form: 
             task.status = "IN REVIEW"
             db.session.commit()
             new_action = Actions(
                 action_user=current_user.id, 
                 action_object=task.id, 
-                action_description=5
+                action_description=Actions.STATUS_IN_REVIEW
             )
-            db.session.add(new_action)
-            db.session.commit()
         elif "in work again" in request.form: 
             task.status = "IN WORK"
             db.session.commit()
             new_action = Actions(
                 action_user=current_user.id, 
                 action_object=task.id, 
-                action_description=7
+                action_description=Actions.STATUS_IN_WORK_AGAIN
             )
-            db.session.add(new_action)
-            db.session.commit()
         elif "done" in request.form: 
             task.status = "DONE"
             db.session.commit()
             new_action = Actions(
                 action_user=current_user.id, 
                 action_object=task.id, 
-                action_description=6
+                action_description=Actions.STATUS_DONE
             )
-            db.session.add(new_action)
-            db.session.commit()
         elif "cancel" in request.form:
             task.status = "DONE"
             db.session.commit()
             new_action = Actions(
                 action_user=current_user.id,
                 action_object=task.id,
-                action_description=8
+                action_description=Actions.CANCELATION
             )
             db.session.add(new_action)
             db.session.commit()
@@ -175,7 +167,7 @@ def create_app():
             new_action = Actions(
                 action_user=current_user.id, 
                 action_object=task.id, 
-                action_description=2
+                action_description=Actions.DELETE_TASK
             )
             db.session.add(new_action)
             db.session.commit()
@@ -200,7 +192,7 @@ def create_app():
             new_action = Actions(
                 action_user=current_user.id, 
                 action_object=task.id, 
-                action_description=3
+                action_description=Actions.EDIT_TASK
             )
             db.session.add(new_action)
             db.session.commit()

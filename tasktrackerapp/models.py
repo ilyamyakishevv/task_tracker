@@ -82,5 +82,14 @@ class Actions(db.Model):
         index=True
         )
     action_date = db.Column(db.DateTime, nullable=True, default=datetime.now())
+    ADD_TASK = 1 
+    DELETE_TASK = 2
+    EDIT_TASK = 3
+    STATUS_IN_WORK = 4
+    STATUS_IN_REVIEW = 5
+    STATUS_DONE = 6
+    STATUS_IN_WORK_AGAIN = 7
+    CANCELATION = 8
+
 
 

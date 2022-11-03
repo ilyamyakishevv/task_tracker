@@ -45,35 +45,41 @@
             <a class="btn btn-primary" href="\logout" role="button">Logout</a>
           </div>
         </header>
-    <div class="container">
-        <h1>Project</h1>
-        <hr align= "left" size="1px" width="600px" color="violet">
-    
-        <div class="row">
-            <div class="col-9">
-                {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                    <div class="alert alert-warning" role="alert">
-                        {% for message in messages %}
-                             {{ message }}<br>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-                {% endwith %}
-                <h2 style="border-bottom:5px solid gray" padding:3px>Активность по задачам</h2>  
-               {% for action in actions %}
-                <hr>{{action.action_date.strftime('%d.%m.%Y %H:%M')}} Пользователь {{action.users.firname_lasname }} 
-                {{ action.changes.description }} номер {{ action.tasks.id }}</hr>  
-              {% endfor %}
-            </div>
-            <div class="col-3">
-                <h2 style="border-bottom:5px solid Gray">Сотрудники</h2>
-                {% for user in users %}
-                <p><a href="/user/{{ user.id }}"> {{ user.firname_lasname }}</a></p>
+        <div class="container">
+          <h1>Project</h1>
+          <hr align= "left" size="1px" width="600px" color="violet">
+      
+          <div class="row">
+              <div class="col-8">
+                  {% with messages = get_flashed_messages() %}
+                      {% if messages %}
+                      <div class="alert alert-warning" role="alert">
+                          {% for message in messages %}
+                               {{ message }}<br>
+                          {% endfor %}
+                      </div>
+                      {% endif %}
+                  {% endwith %}
+                  <h2 style="border-bottom:5px solid gray" padding:3px>Активность по задачам</h2>  
+                  <div class="container-md">
+                  <card>
+                 {% for action in actions %}
+                 
+                  <hr>{{action.action_date.strftime('%d.%m.%Y %H:%M')}} Пользователь {{action.users.firname_lasname }} 
+                  {{ action.changes.description }} номер {{ action.action_object }}</hr>  
                 {% endfor %}
+                </card>
+                </div>
+              </div>
+              <div class="col-4">
+                  <h2 style="border-bottom:5px solid Gray">Сотрудники</h2>
+                  {% for user in users %}
+                  <p><a href="/user/{{ user.id }}"> {{ user.firname_lasname }}</a></p>
+                  {% endfor %}
+  
+  </div>
+  </div>
 
-</div>
-</div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
