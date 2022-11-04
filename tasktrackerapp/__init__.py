@@ -72,7 +72,8 @@ def create_app():
                 status='OPEN',
                 deadline=task_deadline,
                 creator=task_creator,
-                responsible=task_responsible
+                responsible=task_responsible,
+                is_deleted=False
                 )
             db.session.add(new_task)
             db.session.commit()
@@ -108,7 +109,7 @@ def create_app():
     @login_required
     def view_tasks():
         title = "Все задачи"
-        tasks = Tasks.query.order_by(Tasks.id).all()
+        tasks = Tasks.query.order_by(Tasks.id).filter(Tasks.is_deleted == False).all()
         return render_template('view_tasks.html', title=title, tasks=tasks) 
 
 
@@ -183,7 +184,7 @@ def create_app():
     def delete_task(id):
         task = Tasks.query.get_or_404(id)
         try: 
-            db.session.delete(task)
+            task.is_delete = True
             db.session.commit()
             new_action = Actions(
                 action_user=current_user.id, 
@@ -269,7 +270,7 @@ def create_app():
     def add_user():    
         form = AddForm()
         roles = Roles.query.order_by(Roles.id).all()     
-        form.role.choices = [role.role for select in roles]
+        form.role.choices = [role.role for role in roles]
         if form.validate_on_submit():     
             login = form.login.data   
             password1 = form.password.data

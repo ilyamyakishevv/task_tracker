@@ -14,7 +14,7 @@ def create_statuses():
         db.session.commit() 
         
 def create_roles():
-    roles_list = ["ADMIN", "USER"]
+    roles_list = ["admin", "user"]
     for name in roles_list:
         db.session.add(Roles(role=name))
         db.session.commit() 

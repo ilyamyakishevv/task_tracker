@@ -17,7 +17,9 @@ class Tasks(db.Model):
     responsible = db.Column(db.String, nullable=False)
     status = db.Column(db.String, nullable=False, default="OPEN")
     deadline = db.Column(db.DateTime, nullable=True)
+    is_deleted = db.Column(db.Boolean, nullable=False, unique=False)
     action = relationship('Actions', backref='tasks')
+    
 
     def comments_count(self):
         return Comment.query.filter(Comment.task_id == self.id).count()
