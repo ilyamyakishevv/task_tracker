@@ -16,11 +16,11 @@ with app.app_context():
     password1 = getpass("Введите пароль")
     password2 = getpass("Повторите пароль")
     
-    if not  password1 == password2:
+    if not password1 == password2:
         print("Пароли не совпадают")
         sys.exit()
 
-    new_user=Users(login = username, role='admin', firname_lasname=username_fnln, email='admin')
+    new_user = Users(login = username, role='admin', firname_lasname=username_fnln, email='admin')
     new_user.set_password(password1)
 
     db.session.add(new_user)

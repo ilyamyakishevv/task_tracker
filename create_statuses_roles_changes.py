@@ -1,4 +1,4 @@
-from tasktrackerapp.db import Changes, Statuses, Roles, db
+from tasktrackerapp.models import Changes, Statuses, Roles, db
 from tasktrackerapp import create_app
 
 
@@ -12,6 +12,7 @@ def create_statuses():
     for name in status_dict: 
         db.session.add(Statuses(name=name, description=status_dict[name]))
         db.session.commit() 
+     
         
 def create_roles():
     roles_list = ["admin", "user"]
@@ -36,6 +37,7 @@ def create_changes():
         name, desc = change
         db.session.add(Changes(name=name, description=desc))
         db.session.commit() 
+
 
 if __name__ == '__main__':
     app = create_app()
