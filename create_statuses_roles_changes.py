@@ -1,4 +1,4 @@
-from tasktrackerapp.models import Changes, Statuses, Roles, db
+from tasktrackerapp.db import Changes, Statuses, Roles, db
 from tasktrackerapp import create_app
 
 
