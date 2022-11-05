@@ -108,12 +108,12 @@ class Comment(db.Model):
     task_id = db.Column(
         db.Integer,
         db.ForeignKey('tasks.id', ondelete = 'CASCADE'),
-        index = True
+        index=True
     )
     user_id = db.Column(
         db.Integer,
         db.ForeignKey('users.id', ondelete = 'CASCADE'),
-        index = True
+        index=True
     )
     tasks = relationship('Tasks', backref = 'comments')
     user = relationship('Users', backref = 'comments')
