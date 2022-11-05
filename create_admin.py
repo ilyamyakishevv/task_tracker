@@ -20,7 +20,7 @@ with app.app_context():
         print("Пароли не совпадают")
         sys.exit()
 
-    new_user= Users(login = username, role='admin', firname_lasname=username_fnln, email='admin')
+    new_user=Users(login = username, role='admin', firname_lasname=username_fnln, email='admin')
     new_user.set_password(password1)
 
     db.session.add(new_user)
