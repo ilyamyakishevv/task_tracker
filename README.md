@@ -52,9 +52,7 @@ task_tracker_project
 В консоли (не забудьте активировать виртуальное окружение) пропишите:
 
 
-    $ run.sh  (для Linux)
+    $ run.sh 
     
-
-    >run.bat  (для Windows)
 
 
