@@ -2,7 +2,6 @@ from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import login_manager
 from datetime import datetime
 from sqlalchemy.orm import relationship
 
@@ -20,7 +19,6 @@ class Tasks(db.Model):
     is_deleted = db.Column(db.Boolean, nullable=False, unique=False)
     action = relationship('Actions', backref='tasks')
     
-
     def comments_count(self):
         return Comment.query.filter(Comment.task_id == self.id).count()
 
@@ -67,7 +65,6 @@ class Changes(db.Model):
     name = db.Column(db.String, index=True, unique=True, nullable=False)
     description = db.Column(db.String, index=True, nullable=True)
     action = relationship('Actions', backref='changes')
-    
 
 
 class Actions(db.Model): 
@@ -99,23 +96,22 @@ class Actions(db.Model):
     COMMENT = 9
 
 
-
-
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.Text(), nullable = False)
-    created = db.Column(db.DateTime, nullable = False, default = datetime.now())
+    text = db.Column(db.Text(), nullable=False)
+    created = db.Column(db.DateTime, nullable=False, default=datetime.now())
     task_id = db.Column(
         db.Integer,
-        db.ForeignKey('tasks.id', ondelete = 'CASCADE'),
+        db.ForeignKey('tasks.id', ondelete='CASCADE'),
         index=True
     )
     user_id = db.Column(
         db.Integer,
-        db.ForeignKey('users.id', ondelete = 'CASCADE'),
+        db.ForeignKey('users.id', ondelete='CASCADE'),
         index=True
     )
-    tasks = relationship('Tasks', backref = 'comments')
-    user = relationship('Users', backref = 'comments')
+    tasks = relationship('Tasks', backref='comments')
+    user = relationship('Users', backref='comments')
+
     def __repr__(self):
         return '<Comment {}>'.format(self.id)
