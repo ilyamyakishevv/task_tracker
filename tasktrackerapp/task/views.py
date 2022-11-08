@@ -18,7 +18,7 @@ def add_task():
     add_task_form = TaskAdd()
     add_task_form.responsible.choices = [r.firname_lasname for r in all_responsible]
     return render_template(
-                    'add_task.html',
+                    'tasks/add_task.html',
                     title=title,
                     form=add_task_form
                     )
@@ -84,7 +84,7 @@ def edit_task(id):
         db.session.commit()
         flash("Задание успешно измненено")
         return redirect(url_for('view_tasks'))
-    return render_template('edit_task.html', form=edit_form)
+    return render_template('tasks/edit_task.html', form=edit_form)
 
 
 @blueprint.route('/task/<int:id>/delete')
@@ -134,7 +134,7 @@ def get_task(id):
             new_action.action_description = Actions.CANCELATION 
         db.session.add(new_action)
         db.session.commit()   
-    return render_template('task.html', task=task, comment_form=comment_form) 
+    return render_template('tasks/task.html', task=task, comment_form=comment_form) 
 
 
 @blueprint.route('/task/comment', methods=['POST'])
@@ -169,4 +169,4 @@ def add_comment():
 def view_tasks():
     title = "Все задачи"
     tasks = Tasks.query.order_by(Tasks.id).all()
-    return render_template('view_tasks.html', title=title, tasks=tasks)
+    return render_template('tasks/view_tasks.html', title=title, tasks=tasks)

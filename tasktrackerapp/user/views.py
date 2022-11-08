@@ -6,7 +6,7 @@ from tasktrackerapp.task.models import Tasks
 
 from tasktrackerapp.db import db
 
-blueprint = Blueprint('user', __name__, url_prefix='/users')
+blueprint = Blueprint('user', __name__)
 
 @blueprint.route('/login')
 def login():
@@ -14,7 +14,7 @@ def login():
         return redirect(url_for('index'))
     title = "Авторизация"
     login_form = LoginForm()
-    return render_template('login.html', page_title=title, form=login_form) 
+    return render_template('user/login.html', page_title=title, form=login_form) 
 
 
 @blueprint.route('/user.process-login', methods=['GET','POST'])
@@ -42,7 +42,7 @@ def logout():
 def all_users():
     title = "Все пользователи"
     users = Users.query.order_by(Users.id).all()
-    return render_template('all_users.html', title=title, users=users)
+    return render_template('user/all_users.html', title=title, users=users)
     
 @blueprint.route('/user/<int:id>')
 @login_required
@@ -60,5 +60,5 @@ def my_tasks():
     title = "Мои задачи"
     user = current_user.firname_lasname
     tasks = Tasks.query.filter(Tasks.responsible == user).all()
-    return render_template('my_tasks.html', title = title, tasks = tasks)
+    return render_template('tasks/my_tasks.html', title = title, tasks = tasks)
 
