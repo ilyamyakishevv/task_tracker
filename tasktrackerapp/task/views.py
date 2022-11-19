@@ -8,7 +8,7 @@ from datetime import datetime, date
 
 
 
-blueprint = Blueprint('task', __name__, url_prefix='/tasks')
+blueprint = Blueprint('task', __name__)
 
 @blueprint.route('/add_task')
 @login_required

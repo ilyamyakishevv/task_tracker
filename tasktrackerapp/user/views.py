@@ -49,7 +49,7 @@ def all_users():
 def user(id):
     sel_user = Users.query.get(id)
     user_tasks = Tasks.query.filter(Tasks.responsible == sel_user.firname_lasname)
-    return render_template('user.html', user=sel_user, user_tasks=user_tasks)
+    return render_template('user/user.html', user=sel_user, user_tasks=user_tasks)
 
 
 
