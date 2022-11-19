@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <h1 align="center">Страница пользователя - {{user.firname_lasname}} <a href="/all_users"><h6>Назад</h6></a></h1>
+    <br>
+    <table class = "table table-striped table-dark" size="20" >
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Логин</th>
+            <th scope="col">ФИО</th>
+            <th scope="col">Почта</th>
+            <th scope="col">Права</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">{{ user.id }}</th>
+                <td>{{ user.login }}</td>
+                <td>{{ user.firname_lasname }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.role }}</td>
+            </tr>
+        </table>
+        <h2 align="center">Список задач</h2>
+        {% for task in user_tasks %}
+        <div class="container-sm">
+        <div class="alert alert-info">
+            <h2>{{ task.name }}</h2>
+            <p> <b>Статус задачи {{ task.status }}</b></p>
+            <p><b>Создатель {{ task.creator }}</b></p>
+            <p><b>Срок исполнения до {{ task.deadline.date() }}</b></p>
+            <a href="/task/{{ task.id }}" class="btn btn-primary">Детали задачи</a>
+          </div>
+        </div>
+        {% endfor %}
+  {% endblock %}
