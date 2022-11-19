@@ -7,7 +7,6 @@ from tasktrackerapp.db import db
 from datetime import datetime, date
 
 
-
 blueprint = Blueprint('task', __name__)
 
 @blueprint.route('/add_task')
