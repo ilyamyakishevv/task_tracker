@@ -38,7 +38,7 @@ task_tracker_project
     $ python create_statuses_roles_changes.py
 
 
--Создайте перввого админн-пользователя запустив скрипт: 
+-Создайте перввого админ-пользователя запустив скрипт: 
 
      $ python create_admin.py
 
