@@ -1,7 +1,6 @@
 from flask import Flask, render_template
 from tasktrackerapp.db import db
-from flask_login import LoginManager, current_user, login_required, login_user, logout_user
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, login_required
 from flask_migrate import Migrate
 from tasktrackerapp.user.views import blueprint as user_blueprint
 from tasktrackerapp.task.views import blueprint as task_blueprint
