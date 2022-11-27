@@ -135,3 +135,4 @@ env/
 .DS_Store
 database.py
 tasktracker_tasks.db.old
+*.cfg

@@ -8,6 +8,7 @@ from tasktrackerapp.admin.views import blueprint as admin_blueprint
 from tasktrackerapp.user.models import Users
 from tasktrackerapp.task.models import Actions
 
+
 def create_app():
     app = Flask(__name__)
     app.config.from_pyfile('config.py')
@@ -30,5 +31,5 @@ def create_app():
     def index():
         actions = Actions.query.order_by(Actions.action_date).all()
         main_page_users = Users.query.all()
-        return render_template('index.html', users=main_page_users, actions=actions) 
+        return render_template('index.html', users=main_page_users, actions=actions)
     return app
