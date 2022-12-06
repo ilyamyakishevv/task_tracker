@@ -6,7 +6,7 @@ from tasktrackerapp.admin.forms import AddForm, DeleteForm
 
 from tasktrackerapp.db import db
 
-blueprint = Blueprint('admin', __name__, url_prefix='/admins')
+blueprint = Blueprint('admin', __name__)
 
 @blueprint.route('/del_user', methods=['POST', 'GET'])
 @login_required
@@ -18,7 +18,7 @@ def del_user():
         db.session.delete(search)
         db.session.commit()
     flash('Пользователь удален')
-    return redirect(url_for('admin'))
+    return redirect(url_for('admin.del_user'))
 
 @blueprint.route('/admin')
 @login_required
@@ -28,9 +28,9 @@ def admin():
     roles = Roles.query.order_by(Roles.id).all() 
     form.role.choices = [role.role for role in roles]
     if current_user.role == 'admin':
-        return render_template('admin.html', title='Sign In', form=form, form2=form2)
+        return render_template('admin/admin.html', title='Sign In', form=form, form2=form2)
     else:
-        return redirect(url_for('admin.index'))
+        return redirect(url_for('index'))
     
 
 @blueprint.route('/add_user', methods=['POST', 'GET'])
@@ -38,7 +38,7 @@ def admin():
 def add_user():    
     form = AddForm()
     roles = Roles.query.order_by(Roles.id).all()     
-    form.role.choices = [role.role for select in roles]
+    form.role.choices = [role.role for role in roles]
     if form.validate_on_submit():     
         login = form.login.data   
         password1 = form.password.data

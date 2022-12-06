@@ -25,7 +25,6 @@ def create_app():
     def load_user(user_id):
         return Users.query.get(user_id)
 
-
     @app.route('/')
     @login_required
     def index():
